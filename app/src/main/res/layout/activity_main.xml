@@ -6,5 +6,33 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".MainActivity">
+  <android.support.design.widget.TabLayout
+    android:layout_width="429dp"
+    android:layout_height="51dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.488"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:tabBackground="@color/colorPrimary"
+    app:tabSelectedTextColor="@android:color/white"
+    app:tabTextColor="@android:color/darker_gray"
+    tools:targetApi="lollipop">
 
+    <android.support.design.widget.TabItem
+      android:id="@+id/SEARCH"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/search"/>
+    <android.support.design.widget.TabItem
+      android:id="@+id/FAVORITE"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/favorite"/>
+  </android.support.design.widget.TabLayout>
+  <android.support.constraint.Guideline
+    android:id="@+id/guideline"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_percent="0.1"/>
 </android.support.constraint.ConstraintLayout>
