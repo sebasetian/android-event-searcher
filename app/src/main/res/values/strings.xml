@@ -1,6 +1,9 @@
-<resources>
+<resources tools:ignore="ExtraTranslation" xmlns:tools="http://schemas.android.com/tools">
   <string name="app_name">Event Search</string>
   <string name="search">SEARCH</string>
   <string name="favorite">FAVORITE</string>
   <string name="event_search">Event Search</string>
+  <string name="keyword_title">Keyword</string>
+  <string name="keyword_placeholder">Enter keyword</string>
+  <string name="category_title">Category</string>
 </resources>
