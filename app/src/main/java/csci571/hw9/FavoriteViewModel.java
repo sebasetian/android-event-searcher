@@ -1,4 +1,4 @@
-package csci571.hw9.Fragment;
+package csci571.hw9;
 
 import android.arch.lifecycle.ViewModel;
 

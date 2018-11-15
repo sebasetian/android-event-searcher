@@ -5,6 +5,7 @@
   <data class="FormDataBinding">
     <import type="android.view.View" />
     <variable name="viewModel"  type="csci571.hw9.FormViewModel" />
+    <import type="csci571.hw9.Adapters.DistanceConverter"/>
   </data>
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
@@ -31,10 +32,9 @@
       android:layout_marginEnd="27dp"
       android:layout_marginLeft="24dp"
       android:layout_marginRight="27dp"
-      android:dropDownWidth="match_parent"
-      android:hint="@string/keyword_placeholder"
-      android:text="@={viewModel.keywordForAutoComplete}"
       android:completionThreshold="1"
+      android:hint="@string/keyword_placeholder"
+      android:text="@={viewModel.form.keyword}"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/keywordTitle"
@@ -52,7 +52,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/keyword_text"/>
-    <Spinner
+    <android.support.v7.widget.AppCompatSpinner
       android:id="@+id/categorySpinner"
       android:layout_width="0dp"
       android:layout_height="24dp"
@@ -60,6 +60,8 @@
       android:layout_marginBottom="12dp"
       android:layout_marginStart="24dp"
       android:layout_marginLeft="24dp"
+      android:entries="@{viewModel.CATEGORY_LIST}"
+      android:selectedItemPosition="@={viewModel.form.categoryIdx}"
       app:layout_constraintBottom_toTopOf="@+id/distance_title"
       app:layout_constraintEnd_toEndOf="@+id/keyword_text"
       app:layout_constraintStart_toStartOf="parent"
@@ -81,16 +83,19 @@
       android:id="@+id/distanceNum"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="344dp"
+      android:layout_marginBottom="1dp"
       android:layout_marginStart="8dp"
       android:layout_marginLeft="8dp"
       android:autofillHints=""
+      android:text="@={DistanceConverter.IntToString(viewModel.form.distance)}"
       android:ems="10"
       android:hint="10"
       android:inputType="number"
-      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintBottom_toTopOf="@+id/unitSpinner"
       app:layout_constraintEnd_toEndOf="@+id/categorySpinner"
-      app:layout_constraintStart_toStartOf="@+id/distance_title"/>
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="@+id/distance_title"
+      app:layout_constraintTop_toBottomOf="@+id/distance_title"/>
     <TextView
       android:id="@+id/from_title"
       android:layout_width="wrap_content"
@@ -105,35 +110,34 @@
       app:layout_constraintStart_toStartOf="@+id/distance_title"
       app:layout_constraintTop_toBottomOf="@+id/unitSpinner"
       app:layout_constraintVertical_bias="0.0"/>
-    <Spinner
+    <android.support.v7.widget.AppCompatSpinner
       android:id="@+id/unitSpinner"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      android:entries="@{viewModel.UNIT_LIST}"
+      android:selectedItemPosition="@={viewModel.form.distanceUnitIdx}"
       app:layout_constraintBottom_toTopOf="@+id/from_title"
       app:layout_constraintEnd_toEndOf="@+id/distanceNum"
       app:layout_constraintStart_toStartOf="@+id/distanceNum"
       app:layout_constraintTop_toBottomOf="@+id/distanceNum"/>
-
 
     <RadioGroup
       android:id="@+id/fromWhereGroup"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="16dp"
-      android:layout_marginEnd="16dp"
       android:layout_marginLeft="16dp"
-      android:layout_marginRight="16dp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintEnd_toEndOf="@+id/unitSpinner"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/from_title">
       <RadioButton
         android:id="@+id/Here"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="true"
+        android:checked="@{viewModel.isLocationHere}"
         android:clickable="true"
         android:focusable="true"
+        android:onClick="@{() -> viewModel.switchToHere()}"
         android:text="@string/current_location"
         tools:layout_editor_absoluteX="25dp"
         tools:layout_editor_absoluteY="356dp"/>
@@ -141,6 +145,8 @@
         android:id="@+id/Others"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:checked="@{!viewModel.isLocationHere}"
+        android:onClick="@{() -> viewModel.switchToOther()}"
         android:text="@string/other_specify_location"
         tools:layout_editor_absoluteX="26dp"
         tools:layout_editor_absoluteY="400dp"/>
@@ -151,8 +157,7 @@
       android:layout_height="wrap_content"
       android:layout_marginStart="32dp"
       android:layout_marginLeft="32dp"
-      app:hintEnabled="true"
-      app:layout_constraintBottom_toTopOf="@+id/submitBtn"
+      app:hintEnabled="false"
       app:layout_constraintEnd_toEndOf="@+id/distanceNum"
       app:layout_constraintStart_toStartOf="@+id/fromWhereGroup"
       app:layout_constraintTop_toBottomOf="@+id/fromWhereGroup">
@@ -160,20 +165,20 @@
       <android.support.design.widget.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@={viewModel.form.location}"
+        android:enabled="@{!viewModel.isLocationHere}"
         android:hint="Type in the location"/>
     </android.support.design.widget.TextInputLayout>
     <Button
       android:id="@+id/submitBtn"
       android:layout_width="175dp"
       android:layout_height="46dp"
-      android:layout_marginTop="10dp"
-      android:layout_marginBottom="128dp"
       android:layout_marginStart="24dp"
       android:layout_marginEnd="8dp"
       android:layout_marginLeft="24dp"
       android:layout_marginRight="8dp"
       android:text="SEARCH"
-      app:layout_constraintBottom_toBottomOf="parent"
+      android:onClick="@{()-> viewModel.onSubmit()}"
       app:layout_constraintEnd_toStartOf="@+id/clearBtn"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/location_text"/>
@@ -181,17 +186,14 @@
       android:id="@+id/clearBtn"
       android:layout_width="176dp"
       android:layout_height="46dp"
-      android:layout_marginTop="10dp"
-      android:layout_marginBottom="128dp"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="28dp"
       android:layout_marginLeft="8dp"
       android:layout_marginRight="28dp"
       android:text="CLEAR"
-      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@+id/submitBtn"
-      app:layout_constraintTop_toBottomOf="@+id/location_text"/>
+      app:layout_constraintTop_toTopOf="@+id/submitBtn"/>
 
 
   </android.support.constraint.ConstraintLayout>
