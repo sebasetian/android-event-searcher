@@ -6,4 +6,8 @@
   <string name="keyword_title">Keyword</string>
   <string name="keyword_placeholder">Enter keyword</string>
   <string name="category_title">Category</string>
+  <string name="distance">Distance</string>
+  <string name="from">From</string>
+  <string name="current_location">Current location</string>
+  <string name="other_specify_location">Other. Specify location</string>
 </resources>
