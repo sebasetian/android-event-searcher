@@ -22,6 +22,7 @@ public class WebServices {
             .build();
         AutoCompleteAPI api = retrofit.create(AutoCompleteAPI.class);
         try {
+            Log.d("webservice", "autocomplete");
             Response<List<AutoCompleteSchema>> res = api.getAutoCompleteWord(keyword).execute();
             if (res.isSuccessful()) {
                 List<String> names = new ArrayList<>();
@@ -33,7 +34,7 @@ public class WebServices {
                 }
                 return names;
             } else {
-                Log.d("auto-complete", "autocomplete: request failed");
+                Log.d("webservice", "autocomplete: request failed");
                 return new ArrayList<>();
             }
         } catch (Exception e) {
