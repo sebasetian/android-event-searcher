@@ -1,6 +1,5 @@
 package csci571.hw9.Fragment;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
@@ -9,8 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,8 +44,8 @@ public class FormFragment extends Fragment implements OnItemSelectedListener {
         mViewModel.keywordForAutoComplete.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                Log.d("FormFragment", "keywordForAutoComplete onPropertyChanged");
-                mViewModel.reflashAutoComplete();
+
+                mViewModel.getAutoComplete();
             }
         });
         createSpinner((Spinner) formBinding.getRoot().findViewById(R.id.categorySpinner),formBinding.getRoot().getContext(),new ArrayList<>(Arrays.asList("All","Music","Sports","Arts & Theatre","Film","Miscellaneous")));

@@ -2,54 +2,60 @@ package csci571.hw9;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
-import android.databinding.Observable;
-import android.databinding.Observable.OnPropertyChangedCallback;
 import android.databinding.ObservableField;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import csci571.hw9.Model.WebServices;
 import csci571.hw9.Model.FormField;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import java.util.List;
 
 public class FormViewModel extends ViewModel {
     private FormField form;
-    private MutableLiveData<FormField> formPassed;
-    public ObservableField<String> keywordForAutoComplete;
+    private MutableLiveData<FormField> formFields;
     private WebServices webService = new WebServices();
     private ArrayAdapter<String> autoCompAdapter;
+    private CompositeDisposable mDisposables = new CompositeDisposable();
+
+    public ObservableField<String> keywordForAutoComplete;
     public void init() {
         Log.d("formViewModel", "init");
         form = new FormField();
-        formPassed = new MutableLiveData<>();
+        formFields = new MutableLiveData<>();
         keywordForAutoComplete = new ObservableField<>();
-        keywordForAutoComplete.set("laker");
+        keywordForAutoComplete.set("");
+        mDisposables.add(webService.autoCompleteSource.subscribe(new Consumer<List<String>>() {
+            @Override
+            public void accept(List<String> list) throws Exception {
+                refreshAutoComplete(list);
+            }
+        }));
     }
 
     public ArrayAdapter<String> getAutoCompAdapter() {
         return autoCompAdapter;
     }
-    public void reflashAutoComplete() {
+    private void refreshAutoComplete(List<String> list) {
         autoCompAdapter.clear();
-        autoCompAdapter.addAll(getAutoComplete());
+        autoCompAdapter.addAll(list);
         autoCompAdapter.notifyDataSetChanged();
     }
     public void setAutoCompAdapter(ArrayAdapter<String> autoCompAdapter) {
         this.autoCompAdapter = autoCompAdapter;
     }
-    public List<String> getAutoComplete() {
-        Log.d("formViewModel", "getAutoComplete");
-        return webService.autocomplete(keywordForAutoComplete.get());
+    public void getAutoComplete() {
+        webService.autocomplete(keywordForAutoComplete.get());
     }
     public void onSubmit() {
         if(!form.isValid()) {
-            formPassed.setValue(form);
+            formFields.setValue(form);
         }
     }
     public MutableLiveData<FormField> getSubmit() {
-        return formPassed;
+        return formFields;
     }
     @BindingAdapter("error")
     public static void setError(EditText editText, Object strOrResId) {
