@@ -1,36 +1,43 @@
 package csci571.hw9;
 
 import android.arch.lifecycle.MutableLiveData;
-import android.databinding.BaseObservable;
+import android.arch.lifecycle.ViewModel;
 import android.databinding.BindingAdapter;
 import android.databinding.Observable;
+import android.databinding.Observable.OnPropertyChangedCallback;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
+import android.location.Location;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import csci571.hw9.Model.FormPostData;
 import csci571.hw9.Model.WebServices;
 import csci571.hw9.Model.FormField;
+import csci571.hw9.Schema.LocationSchema;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FormViewModel extends BaseObservable {
+public class FormViewModel extends ViewModel {
     public FormField form;
     public ObservableBoolean isLocationHere  = new ObservableBoolean();
-    private MutableLiveData<FormField> formFields;
+    private MutableLiveData<FormPostData> formData;
     private WebServices webService = new WebServices();
     private ArrayAdapter<String> autoCompAdapter;
     private CompositeDisposable mDisposables = new CompositeDisposable();
+    public PublishSubject<Location> currLocationSource = PublishSubject.create();
     public final List<String> UNIT_LIST = new ArrayList<>(Arrays.asList("Miles","Kilometers"));
     public final List<String> CATEGORY_LIST = new ArrayList<>(Arrays.asList("All","Music","Sports","Arts & Theatre","Film","Miscellaneous"));
+    public final static int REQUEST_LOCATION = 0;
     public void init() {
         Log.d("formViewModel", "init");
         form = new FormField();
-        formFields = new MutableLiveData<>();
+        formData = new MutableLiveData<>();
         initFormField();
         mDisposables.add(webService.autoCompleteSource.subscribe(new Consumer<List<String>>() {
             @Override
@@ -38,6 +45,19 @@ public class FormViewModel extends BaseObservable {
                 refreshAutoComplete(list);
             }
         }));
+        mDisposables.add(currLocationSource.subscribe(new Consumer<Location>() {
+            @Override
+            public void accept(Location location) throws Exception {
+                onSubmit(location.getLatitude(),location.getLongitude());
+            }
+        }));
+        mDisposables.add(webService.locationSource.subscribe(new Consumer<LocationSchema>() {
+            @Override
+            public void accept(LocationSchema locationSchema) throws Exception {
+                onSubmit(locationSchema.lat,locationSchema.lng);
+            }
+        }));
+
     }
     private void initFormField() {
         form.keyword = new ObservableField<>();
@@ -58,6 +78,9 @@ public class FormViewModel extends BaseObservable {
                 getAutoComplete();
             }
         });
+    }
+    public void getLocationFromAddress() {
+        webService.getLocationFromAddress(form.location.get());
     }
     public ArrayAdapter<String> getAutoCompAdapter() {
         return autoCompAdapter;
@@ -81,14 +104,20 @@ public class FormViewModel extends BaseObservable {
     public void getAutoComplete() {
         webService.autocomplete(form.keyword.get());
     }
-    public void onSubmit() {
-        if(form.isValid()) {
-            formFields.setValue(form);
 
+    public void onSubmit(double lat,double lng) {
+        if(form.isValid()) {
+            FormPostData data = new FormPostData();
+            data.lat = lat;
+            data.lng = lng;
+            data.keyword = form.keyword.get();
+            data.category = getSpinnerItem(form.);
+            data.distance = form.distance.get() != null ? form.distance.get() : 10;
+            data.distanceUnit =
         }
     }
-    public MutableLiveData<FormField> getSubmit() {
-        return formFields;
+    public MutableLiveData<FormPostData> getSubmit() {
+        return formData;
     }
     @BindingAdapter("error")
     public static void setError(EditText editText, Object strOrResId) {
@@ -100,4 +129,8 @@ public class FormViewModel extends BaseObservable {
 
     }
 
+    @Override
+    public void onCleared() {
+        mDisposables.dispose();
+    }
 }
