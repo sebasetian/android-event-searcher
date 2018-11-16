@@ -1,6 +1,8 @@
 package csci571.hw9.Fragment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import csci571.hw9.Adapters.ResultRecyclerViewAdapter;
+import csci571.hw9.MainViewModel;
 import csci571.hw9.R;
 import csci571.hw9.Fragment.dummy.DummyContent;
 import csci571.hw9.Fragment.dummy.DummyContent.DummyItem;
+import csci571.hw9.databinding.ResultDataBinding;
 
 /**
  * A fragment representing a list of Items. <p /> Activities containing this fragment MUST implement
@@ -25,7 +29,8 @@ public class ResultFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-
+    private MainViewModel mViewModel;
+    public ResultDataBinding resultDataBinding;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon
      * screen orientation changes).
@@ -54,9 +59,12 @@ public class ResultFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.result_item_list, container, false);
+        resultDataBinding = DataBindingUtil.inflate(inflater,R.layout.result_item_list,container,false);
+        View view = resultDataBinding.getRoot();
+        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mViewModel.init();
+        resultDataBinding.setViewModel(mViewModel);
 
-        // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;

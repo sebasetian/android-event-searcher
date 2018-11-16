@@ -27,7 +27,7 @@ public class FormViewModel extends ViewModel {
     public FormField form;
     public ObservableBoolean isLocationHere  = new ObservableBoolean();
     private MutableLiveData<FormPostData> formData;
-    private WebServices webService = new WebServices();
+    private WebServices mWebService = WebServices.getInstance();
     private ArrayAdapter<String> autoCompAdapter;
     private CompositeDisposable mDisposables = new CompositeDisposable();
     public PublishSubject<Location> currLocationSource = PublishSubject.create();
@@ -39,7 +39,7 @@ public class FormViewModel extends ViewModel {
         form = new FormField();
         formData = new MutableLiveData<>();
         initFormField();
-        mDisposables.add(webService.autoCompleteSource.subscribe(new Consumer<List<String>>() {
+        mDisposables.add(mWebService.autoCompleteSource.subscribe(new Consumer<List<String>>() {
             @Override
             public void accept(List<String> list) throws Exception {
                 refreshAutoComplete(list);
@@ -51,7 +51,7 @@ public class FormViewModel extends ViewModel {
                 onSubmit(location.getLatitude(),location.getLongitude());
             }
         }));
-        mDisposables.add(webService.locationSource.subscribe(new Consumer<LocationSchema>() {
+        mDisposables.add(mWebService.locationSource.subscribe(new Consumer<LocationSchema>() {
             @Override
             public void accept(LocationSchema locationSchema) throws Exception {
                 onSubmit(locationSchema.lat,locationSchema.lng);
@@ -80,7 +80,7 @@ public class FormViewModel extends ViewModel {
         });
     }
     public void getLocationFromAddress() {
-        webService.getLocationFromAddress(form.location.get());
+        mWebService.getLocationFromAddress(form.location.get());
     }
     public ArrayAdapter<String> getAutoCompAdapter() {
         return autoCompAdapter;
@@ -102,7 +102,7 @@ public class FormViewModel extends ViewModel {
         this.autoCompAdapter = autoCompAdapter;
     }
     public void getAutoComplete() {
-        webService.autocomplete(form.keyword.get());
+        mWebService.autocomplete(form.keyword.get());
     }
 
     public void onSubmit(double lat,double lng) {
@@ -114,7 +114,7 @@ public class FormViewModel extends ViewModel {
             data.category = getCategoryItem(form.categoryIdx.get());
             data.distance = form.distance.get() != null ? form.distance.get() : 10;
             data.distanceUnit = getUnitItem(form.distanceUnitIdx.get());
-            webService.postFrom(data);
+            mWebService.postFrom(data);
 
         }
     }

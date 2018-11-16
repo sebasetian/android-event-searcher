@@ -20,9 +20,16 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public class WebServices extends BaseObservable {
+    private static WebServices instance;
     private final String BASE_URL = "https://csci571hw8shihyaol.azurewebsites.net/";
     public PublishSubject<List<String>> autoCompleteSource = PublishSubject.create();
     public PublishSubject<LocationSchema> locationSource = PublishSubject.create();
+    public static synchronized WebServices getInstance(){
+        if (instance == null) {
+            instance = new WebServices();
+        }
+        return instance;
+    }
     public void autocomplete(String keyword) {
         if (keyword == null || keyword.length() == 0) return;
         Retrofit retrofit = new Retrofit.Builder()

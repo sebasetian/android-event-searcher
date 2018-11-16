@@ -4,6 +4,8 @@ import static csci571.hw9.FormViewModel.REQUEST_LOCATION;
 
 import android.Manifest;
 import android.Manifest.permission;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -40,7 +42,7 @@ import java.util.List;
 
 public class FormFragment extends Fragment {
 
-    private FormViewModel mViewModel = new FormViewModel();
+    private FormViewModel mViewModel;
     public FormDataBinding formBinding;
 
     public static FormFragment newInstance() {
@@ -52,6 +54,7 @@ public class FormFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(FormViewModel.class);
         formBinding = DataBindingUtil.inflate(inflater, R.layout.form_fragment, container, false);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(formBinding.getRoot().getContext(),
                                                           android.R.layout.select_dialog_item,
