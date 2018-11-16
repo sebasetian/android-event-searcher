@@ -10,11 +10,10 @@
   <android.support.design.widget.TabLayout
     android:id="@+id/tabLayout"
     android:layout_width="429dp"
-    android:layout_height="51dp"
+    android:layout_height="54dp"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.488"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/toolbar2"
     app:tabBackground="@color/colorPrimary"
     app:tabSelectedTextColor="@android:color/white"
     app:tabTextColor="@android:color/darker_gray"
@@ -39,11 +38,27 @@
     app:layout_constraintGuide_percent="0.1"/>
   <android.support.v4.view.ViewPager
     android:id="@+id/mainViewPager"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
+    android:layout_width="410dp"
+    android:layout_height="571dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="1.0"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/guideline"/>
+    app:layout_constraintTop_toBottomOf="@+id/tabLayout"/>
+  <android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar2"
+    android:layout_width="413dp"
+    android:layout_height="52dp"
+    android:background="?attr/colorPrimary"
+    android:elevation="4dp"
+    android:minHeight="?attr/actionBarSize"
+    android:theme="?attr/actionBarTheme"
+    app:layout_constraintBottom_toTopOf="@+id/guideline"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.0"
+    app:title="Event Search"/>
 
 </android.support.constraint.ConstraintLayout>

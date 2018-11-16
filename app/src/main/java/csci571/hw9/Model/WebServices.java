@@ -5,6 +5,7 @@ import android.databinding.BaseObservable;
 import android.util.Log;
 import csci571.hw9.Schema.AutoCompleteSchema;
 import csci571.hw9.Schema.LocationSchema;
+import csci571.hw9.Schema.SearchEventSchema;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class WebServices extends BaseObservable {
     private final String BASE_URL = "https://csci571hw8shihyaol.azurewebsites.net/";
     public PublishSubject<List<String>> autoCompleteSource = PublishSubject.create();
     public PublishSubject<LocationSchema> locationSource = PublishSubject.create();
+    public PublishSubject<List<SearchEventSchema>> searchEventsSource = PublishSubject.create();
     public static synchronized WebServices getInstance(){
         if (instance == null) {
             instance = new WebServices();
@@ -94,15 +96,21 @@ public class WebServices extends BaseObservable {
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .build();
         EventSearchAPI api = retrofit.create(EventSearchAPI.class);
-        api.postForm(data).enqueue(new Callback<FormPostData>() {
+        api.postForm(data).enqueue(new Callback<List<SearchEventSchema>>() {
             @Override
-            public void onResponse(Call<FormPostData> call, Response<FormPostData> response) {
-
+            public void onResponse(Call<List<SearchEventSchema>> call,
+                                   Response<List<SearchEventSchema>> response) {
+                List<SearchEventSchema> list = new ArrayList<>();
+                if (response.body() != null) {
+                    list.addAll(response.body());
+                }
+                searchEventsSource.onNext(list);
             }
 
             @Override
-            public void onFailure(Call<FormPostData> call, Throwable t) {
-
+            public void onFailure(Call<List<SearchEventSchema>> call, Throwable t) {
+                Log.d("webservice", "postFrom: request failed");
+                t.printStackTrace();
             }
         });
     }
@@ -121,6 +129,6 @@ interface LocationAPI {
 interface EventSearchAPI {
 
     @POST("form/")
-    Call<FormPostData> postForm(@Body FormPostData data);
+    Call<List<SearchEventSchema>> postForm(@Body FormPostData data);
 
 }

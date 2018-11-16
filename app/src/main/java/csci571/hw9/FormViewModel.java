@@ -115,7 +115,6 @@ public class FormViewModel extends ViewModel {
             data.distance = form.distance.get() != null ? form.distance.get() : 10;
             data.distanceUnit = getUnitItem(form.distanceUnitIdx.get());
             mWebService.postFrom(data);
-
         }
     }
     public MutableLiveData<FormPostData> getSubmit() {
