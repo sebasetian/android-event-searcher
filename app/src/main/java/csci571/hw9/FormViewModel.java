@@ -111,9 +111,11 @@ public class FormViewModel extends ViewModel {
             data.lat = lat;
             data.lng = lng;
             data.keyword = form.keyword.get();
-            data.category = getSpinnerItem(form.);
+            data.category = getCategoryItem(form.categoryIdx.get());
             data.distance = form.distance.get() != null ? form.distance.get() : 10;
-            data.distanceUnit =
+            data.distanceUnit = getUnitItem(form.distanceUnitIdx.get());
+            webService.postFrom(data);
+
         }
     }
     public MutableLiveData<FormPostData> getSubmit() {
@@ -128,7 +130,16 @@ public class FormViewModel extends ViewModel {
         }
 
     }
-
+    private String getCategoryItem(int idx) {
+        return CATEGORY_LIST.get(idx);
+    }
+    private String getUnitItem(int idx) {
+        if(idx == 0) {
+            return "miles";
+        } else {
+            return "km";
+        }
+    }
     @Override
     public void onCleared() {
         mDisposables.dispose();

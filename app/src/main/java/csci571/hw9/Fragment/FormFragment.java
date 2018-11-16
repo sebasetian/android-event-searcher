@@ -5,6 +5,7 @@ import static csci571.hw9.FormViewModel.REQUEST_LOCATION;
 import android.Manifest;
 import android.Manifest.permission;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
@@ -30,6 +31,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import csci571.hw9.FormViewModel;
 import csci571.hw9.R;
+import csci571.hw9.ResultActivity;
 import csci571.hw9.databinding.FormDataBinding;
 import csci571.hw9.generated.callback.OnClickListener;
 import java.util.ArrayList;
@@ -65,8 +67,10 @@ public class FormFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     getLocation();
+
                 }
             });
+
         return formBinding.getRoot();
     }
 
@@ -83,6 +87,8 @@ public class FormFragment extends Fragment {
                             @Override
                             public void onSuccess(Location location) {
                                 mViewModel.currLocationSource.onNext(location);
+                                Intent intent = new Intent(getActivity(),ResultActivity.class);
+                                startActivity(intent);
                             }});
                 }
             }
@@ -110,9 +116,13 @@ public class FormFragment extends Fragment {
                         @Override
                         public void onSuccess(Location location) {
                             mViewModel.currLocationSource.onNext(location);
+                            Intent intent = new Intent(getActivity(),ResultActivity.class);
+                            startActivity(intent);
                         }});
             } else {
                 mViewModel.getLocationFromAddress();
+                Intent intent = new Intent(getActivity(),ResultActivity.class);
+                startActivity(intent);
             }
         }
     }

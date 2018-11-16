@@ -80,6 +80,25 @@ public class WebServices extends BaseObservable {
             }
         });
     }
+    public void postFrom(FormPostData data) {
+        Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .build();
+        EventSearchAPI api = retrofit.create(EventSearchAPI.class);
+        api.postForm(data).enqueue(new Callback<FormPostData>() {
+            @Override
+            public void onResponse(Call<FormPostData> call, Response<FormPostData> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<FormPostData> call, Throwable t) {
+
+            }
+        });
+    }
 }
 
 interface AutoCompleteAPI {

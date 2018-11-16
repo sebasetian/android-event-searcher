@@ -1,4 +1,4 @@
-<resources tools:ignore="ExtraTranslation" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
   <string name="app_name">Event Search</string>
   <string name="search">SEARCH</string>
   <string name="favorite">FAVORITE</string>
@@ -10,4 +10,8 @@
   <string name="from">From</string>
   <string name="current_location">Current location</string>
   <string name="other_specify_location">Other. Specify location</string>
+  <string name="title_activity_result">ResultActivity</string>
+  <string name="title_home">Home</string>
+  <string name="title_dashboard">Dashboard</string>
+  <string name="title_notifications">Notifications</string>
 </resources>
