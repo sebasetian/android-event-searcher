@@ -3,7 +3,7 @@
   xmlns:tools="http://schemas.android.com/tools">
   <data class="ResultItemDataBinding">
     <import type="android.view.View" />
-    <variable name="viewModel"  type="csci571.hw9.viewmodels.MainViewModel" />
+    <variable name="viewModel"  type="csci571.hw9.viewmodel.MainViewModel" />
     <variable name="data"  type="csci571.hw9.model.ResultField" />
   </data>
 <LinearLayout android:orientation="horizontal"

@@ -1,4 +1,4 @@
-package csci571.hw9.viewmodels;
+package csci571.hw9.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;

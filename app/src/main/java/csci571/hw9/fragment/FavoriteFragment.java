@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import csci571.hw9.viewmodels.MainViewModel;
+import csci571.hw9.viewmodel.MainViewModel;
 import csci571.hw9.R;
 
 public class FavoriteFragment extends Fragment {

@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools">
   <data class="FormDataBinding">
     <import type="android.view.View" />
-    <variable name="viewModel"  type="csci571.hw9.viewmodels.FormViewModel" />
+    <variable name="viewModel"  type="csci571.hw9.viewmodel.FormViewModel" />
     <import type="csci571.hw9.adapters.DistanceConverter"/>
   </data>
   <android.support.constraint.ConstraintLayout

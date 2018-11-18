@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import csci571.hw9.adapters.ResultViewAdapter;
-import csci571.hw9.viewmodels.MainViewModel;
+import csci571.hw9.viewmodel.MainViewModel;
 import csci571.hw9.R;
 import csci571.hw9.databinding.ResultDataBinding;
 
@@ -24,7 +24,6 @@ public class ResultFragment extends Fragment {
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private MainViewModel mViewModel;
     public ResultDataBinding resultDataBinding;
@@ -47,10 +46,6 @@ public class ResultFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -61,13 +56,13 @@ public class ResultFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mViewModel.init();
         resultDataBinding.setViewModel(mViewModel);
+        Context context = view.getContext();
+        RecyclerView recyclerView = (RecyclerView) view;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        ResultViewAdapter adapter = new ResultViewAdapter();
+        mViewModel.setmResultViewAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new ResultViewAdapter());
-        }
         return view;
     }
 
