@@ -18,7 +18,7 @@ public class MainViewModel extends ViewModel {
         mDisposable.add(mWebservice.searchEventsSource.subscribe(new Consumer<List<SearchEventSchema>>() {
             @Override
             public void accept(List<SearchEventSchema> searchEventSchemas) throws Exception {
-                Log.d("MainViewModel", "accept");
+                Log.d("MainViewModel", "accept " + searchEventSchemas.get(0).name);
                 isLoading.set(false);
             }
         }));

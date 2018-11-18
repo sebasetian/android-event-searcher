@@ -1,8 +1,11 @@
 package csci571.hw9;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.View.OnClickListener;
 import csci571.hw9.Fragment.ResultFragment.OnListFragmentInteractionListener;
 import csci571.hw9.Fragment.dummy.DummyContent.DummyItem;
 
@@ -14,12 +17,24 @@ public class ResultActivity extends AppCompatActivity implements OnListFragmentI
         setContentView(R.layout.activity_result);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Search Results");
-        toolbar.setNavigationIcon(android.support.v7.appcompat.R.drawable.abc_ab_share_pack_mtrl_alpha);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbar.setNavigationOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

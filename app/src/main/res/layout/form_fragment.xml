@@ -134,7 +134,7 @@
         android:id="@+id/Here"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="@{viewModel.isLocationHere}"
+        android:checked="@{viewModel.form.isFromHere}"
         android:clickable="true"
         android:focusable="true"
         android:onClick="@{() -> viewModel.switchToHere()}"
@@ -145,7 +145,7 @@
         android:id="@+id/Others"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="@{!viewModel.isLocationHere}"
+        android:checked="@{!viewModel.form.isFromHere}"
         android:onClick="@{() -> viewModel.switchToOther()}"
         android:text="@string/other_specify_location"
         tools:layout_editor_absoluteX="26dp"
@@ -166,7 +166,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@={viewModel.form.location}"
-        android:enabled="@{!viewModel.isLocationHere}"
+        android:enabled="@{!viewModel.form.isFromHere}"
         android:hint="Type in the location"/>
     </android.support.design.widget.TextInputLayout>
     <Button

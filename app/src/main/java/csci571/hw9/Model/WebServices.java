@@ -90,6 +90,7 @@ public class WebServices extends BaseObservable {
         });
     }
     public void postFrom(FormPostData data) {
+        Log.d("webservice", "postFrom:");
         Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -101,6 +102,8 @@ public class WebServices extends BaseObservable {
             public void onResponse(Call<List<SearchEventSchema>> call,
                                    Response<List<SearchEventSchema>> response) {
                 List<SearchEventSchema> list = new ArrayList<>();
+                Log.d("webservice", "postFrom: onResponse");
+
                 if (response.body() != null) {
                     list.addAll(response.body());
                 }

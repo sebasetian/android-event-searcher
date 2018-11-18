@@ -2,6 +2,7 @@ package csci571.hw9.Model;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 
@@ -11,7 +12,7 @@ public class FormField extends BaseObservable {
     public ObservableInt categoryIdx;
     public ObservableField<Integer> distance;
     public ObservableInt distanceUnitIdx;
-    public ObservableField<String> fromWhere;
+    public ObservableBoolean isFromHere;
     public ObservableField<String> location;
 
     public final ObservableField<Integer> keywordError = new ObservableField<>();

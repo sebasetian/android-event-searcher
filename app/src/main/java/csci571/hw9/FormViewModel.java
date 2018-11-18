@@ -25,7 +25,6 @@ import java.util.List;
 
 public class FormViewModel extends ViewModel {
     public FormField form;
-    public ObservableBoolean isLocationHere  = new ObservableBoolean();
     private MutableLiveData<FormPostData> formData;
     private WebServices mWebService = WebServices.getInstance();
     private ArrayAdapter<String> autoCompAdapter;
@@ -48,6 +47,7 @@ public class FormViewModel extends ViewModel {
         mDisposables.add(currLocationSource.subscribe(new Consumer<Location>() {
             @Override
             public void accept(Location location) throws Exception {
+                Log.d("formViewModel", "currLocationSource: ");
                 onSubmit(location.getLatitude(),location.getLongitude());
             }
         }));
@@ -67,11 +67,10 @@ public class FormViewModel extends ViewModel {
         form.distance = new ObservableField<>();
         form.distanceUnitIdx = new ObservableInt();
         form.distanceUnitIdx.set(0);
-        form.fromWhere = new ObservableField<>();
-        form.fromWhere.set("Here");
+        form.isFromHere = new ObservableBoolean();
+        form.isFromHere.set(true);
         form.location = new ObservableField<>();
         form.location.set("");
-        isLocationHere.set(true);
         form.keyword.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
@@ -91,12 +90,10 @@ public class FormViewModel extends ViewModel {
         autoCompAdapter.notifyDataSetChanged();
     }
     public void switchToHere() {
-        form.fromWhere.set("Here");
-        isLocationHere.set(true);
+        form.isFromHere.set(true);
     }
     public void switchToOther() {
-        form.fromWhere.set("Other");
-        isLocationHere.set(false);
+        form.isFromHere.set(false);
     }
     public void setAutoCompAdapter(ArrayAdapter<String> autoCompAdapter) {
         this.autoCompAdapter = autoCompAdapter;
@@ -110,10 +107,13 @@ public class FormViewModel extends ViewModel {
             FormPostData data = new FormPostData();
             data.lat = lat;
             data.lng = lng;
+
             data.keyword = form.keyword.get();
             data.category = getCategoryItem(form.categoryIdx.get());
             data.distance = form.distance.get() != null ? form.distance.get() : 10;
+
             data.distanceUnit = getUnitItem(form.distanceUnitIdx.get());
+            Log.d("formViewModel", "onSubmit: distanceUnit " + data.distanceUnit);
             mWebService.postFrom(data);
         }
     }

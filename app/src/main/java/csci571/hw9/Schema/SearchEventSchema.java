@@ -1,16 +1,16 @@
 package csci571.hw9.Schema;
 
 public class SearchEventSchema {
-    String name;
-    String type;
-    String id;
-    String url;
-    Sales sales;
-    Dates dates;
-    classification[] classifications;
-    PriceRange[] priceRanges ;
-    Seatmap seatmap;
-    EmbeddedVenues _embedded;
+    public String name;
+    public String type;
+    public String id;
+    public String url;
+    public Sales sales;
+    public Dates dates;
+    public classification[] classifications;
+    public PriceRange[] priceRanges ;
+    public Seatmap seatmap;
+    public EmbeddedVenues _embedded;
 }
 
 class Dates {
