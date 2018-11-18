@@ -23,8 +23,10 @@ public class MainViewModel extends ViewModel {
             public void accept(List<SearchEventSchema> searchEventSchemas) throws Exception {
                 mSearchEvents = searchEventSchemas;
                 if (mResultViewAdapter != null) {
+                    Log.d("MainViewModel", "accept: setData");
                     mResultViewAdapter.setData(mSearchEvents);
                 }
+                Log.d("MainViewModel", "accept: ");
                 isLoading.set(false);
             }
         }));
@@ -46,9 +48,12 @@ public class MainViewModel extends ViewModel {
 
     public void setmResultViewAdapter(ResultViewAdapter mResultViewAdapter) {
         this.mResultViewAdapter = mResultViewAdapter;
+        mResultViewAdapter.setViewModel(this);
         if (mSearchEvents != null) {
             mResultViewAdapter.setData(mSearchEvents);
+            mResultViewAdapter.notifyDataSetChanged();
         }
+        Log.d("MainViewModel", "setmResultViewAdapter: ");
     }
 
 }

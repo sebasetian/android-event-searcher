@@ -1,5 +1,7 @@
 package csci571.hw9.fragment;
 
+import static android.content.ContentValues.TAG;
+
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -7,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,12 +60,12 @@ public class ResultFragment extends Fragment {
         mViewModel.init();
         resultDataBinding.setViewModel(mViewModel);
         Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         ResultViewAdapter adapter = new ResultViewAdapter();
         mViewModel.setmResultViewAdapter(adapter);
         recyclerView.setAdapter(adapter);
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        Log.d("ResultFragment", "onCreateView: ");
         return view;
     }
 
