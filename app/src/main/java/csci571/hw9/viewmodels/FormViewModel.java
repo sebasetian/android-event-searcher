@@ -1,4 +1,4 @@
-package csci571.hw9;
+package csci571.hw9.viewmodels;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
@@ -12,10 +12,10 @@ import android.location.Location;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import csci571.hw9.Model.FormPostData;
-import csci571.hw9.Model.WebServices;
-import csci571.hw9.Model.FormField;
-import csci571.hw9.Schema.LocationSchema;
+import csci571.hw9.model.FormPostData;
+import csci571.hw9.model.WebServices;
+import csci571.hw9.model.FormField;
+import csci571.hw9.schema.LocationSchema;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;

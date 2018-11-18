@@ -1,4 +1,4 @@
-package csci571.hw9.Model;
+package csci571.hw9.model;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;

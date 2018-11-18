@@ -1,6 +1,6 @@
-package csci571.hw9.Fragment;
+package csci571.hw9.fragment;
 
-import static csci571.hw9.FormViewModel.REQUEST_LOCATION;
+import static csci571.hw9.viewmodels.FormViewModel.REQUEST_LOCATION;
 
 import android.Manifest;
 import android.Manifest.permission;
@@ -24,11 +24,10 @@ import android.widget.AutoCompleteTextView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-import csci571.hw9.FormViewModel;
+import csci571.hw9.viewmodels.FormViewModel;
 import csci571.hw9.R;
 import csci571.hw9.ResultActivity;
 import csci571.hw9.databinding.FormDataBinding;
-import csci571.hw9.generated.callback.OnClickListener;
 
 public class FormFragment extends Fragment {
 

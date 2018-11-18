@@ -1,11 +1,10 @@
-package csci571.hw9.Model;
+package csci571.hw9.model;
 
-import android.database.Observable;
 import android.databinding.BaseObservable;
 import android.util.Log;
-import csci571.hw9.Schema.AutoCompleteSchema;
-import csci571.hw9.Schema.LocationSchema;
-import csci571.hw9.Schema.SearchEventSchema;
+import csci571.hw9.schema.AutoCompleteSchema;
+import csci571.hw9.schema.LocationSchema;
+import csci571.hw9.schema.SearchEventSchema;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;

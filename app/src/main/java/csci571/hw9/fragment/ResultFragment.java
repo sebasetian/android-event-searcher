@@ -1,21 +1,18 @@
-package csci571.hw9.Fragment;
+package csci571.hw9.fragment;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import csci571.hw9.Adapters.ResultRecyclerViewAdapter;
-import csci571.hw9.MainViewModel;
+import csci571.hw9.adapters.ResultViewAdapter;
+import csci571.hw9.viewmodels.MainViewModel;
 import csci571.hw9.R;
-import csci571.hw9.Fragment.dummy.DummyContent;
-import csci571.hw9.Fragment.dummy.DummyContent.DummyItem;
 import csci571.hw9.databinding.ResultDataBinding;
 
 /**
@@ -68,12 +65,8 @@ public class ResultFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new ResultRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(new ResultViewAdapter());
         }
         return view;
     }
@@ -107,6 +100,6 @@ public class ResultFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
 
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+
     }
 }

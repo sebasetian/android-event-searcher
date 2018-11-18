@@ -1,7 +1,6 @@
-package csci571.hw9.Adapters;
+package csci571.hw9.adapters;
 
 import android.databinding.InverseMethod;
-import android.widget.EditText;
 
 public class DistanceConverter {
     @InverseMethod("StringToInt")

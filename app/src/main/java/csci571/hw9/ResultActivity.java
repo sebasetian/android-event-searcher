@@ -6,8 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
-import csci571.hw9.Fragment.ResultFragment.OnListFragmentInteractionListener;
-import csci571.hw9.Fragment.dummy.DummyContent.DummyItem;
+import csci571.hw9.fragment.ResultFragment.OnListFragmentInteractionListener;
 
 public class ResultActivity extends AppCompatActivity implements OnListFragmentInteractionListener {
 
@@ -35,10 +34,5 @@ public class ResultActivity extends AppCompatActivity implements OnListFragmentI
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    public void onListFragmentInteraction(DummyItem item) {
-
     }
 }

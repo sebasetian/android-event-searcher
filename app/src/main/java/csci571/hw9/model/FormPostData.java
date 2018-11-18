@@ -1,4 +1,4 @@
-package csci571.hw9.Model;
+package csci571.hw9.model;
 
 public class FormPostData {
     public String keyword;

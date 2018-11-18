@@ -1,4 +1,4 @@
-package csci571.hw9.Fragment;
+package csci571.hw9.fragment;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import csci571.hw9.MainViewModel;
+import csci571.hw9.viewmodels.MainViewModel;
 import csci571.hw9.R;
 
 public class FavoriteFragment extends Fragment {

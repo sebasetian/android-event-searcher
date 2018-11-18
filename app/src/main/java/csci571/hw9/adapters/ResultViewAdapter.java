@@ -1,13 +1,12 @@
-package csci571.hw9.Adapters;
+package csci571.hw9.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import csci571.hw9.R;
-import csci571.hw9.Schema.SearchEventSchema;
+import csci571.hw9.schema.SearchEventSchema;
 import java.util.List;
 
 public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.ResultViewHolder> {

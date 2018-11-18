@@ -1,10 +1,10 @@
-package csci571.hw9;
+package csci571.hw9.viewmodels;
 
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableBoolean;
 import android.util.Log;
-import csci571.hw9.Model.WebServices;
-import csci571.hw9.Schema.SearchEventSchema;
+import csci571.hw9.model.WebServices;
+import csci571.hw9.schema.SearchEventSchema;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import java.util.List;

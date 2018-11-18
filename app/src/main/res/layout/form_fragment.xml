@@ -4,13 +4,13 @@
   xmlns:tools="http://schemas.android.com/tools">
   <data class="FormDataBinding">
     <import type="android.view.View" />
-    <variable name="viewModel"  type="csci571.hw9.FormViewModel" />
-    <import type="csci571.hw9.Adapters.DistanceConverter"/>
+    <variable name="viewModel"  type="csci571.hw9.viewmodels.FormViewModel" />
+    <import type="csci571.hw9.adapters.DistanceConverter"/>
   </data>
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.FormFragment">
+    tools:context=".fragment.FormFragment">
     <TextView
       android:id="@+id/keywordTitle"
       android:layout_width="wrap_content"

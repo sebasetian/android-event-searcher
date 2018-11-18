@@ -6,7 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import csci571.hw9.FragmentPager.fragmentPagerAdapter;
+import csci571.hw9.fragmentpager.fragmentPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

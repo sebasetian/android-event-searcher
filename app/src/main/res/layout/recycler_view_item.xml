@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="horizontal"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+  <data class="ResultItemDataBinding">
+    <import type="android.view.View" />
+    <variable name="viewModel"  type="csci571.hw9.viewmodels.MainViewModel" />
+    <variable name="data"  type="csci571.hw9.model.ResultField" />
+  </data>
+<LinearLayout android:orientation="horizontal"
               android:padding="8dp"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
@@ -42,3 +47,4 @@
     android:contentDescription="@string/type_image"
     tools:src="@tools:sample/avatars"/>
 </LinearLayout>
+</layout>

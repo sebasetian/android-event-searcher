@@ -5,7 +5,7 @@
   xmlns:tools="http://schemas.android.com/tools">
   <data class="ResultDataBinding">
     <import type="android.view.View" />
-    <variable name="viewModel"  type="csci571.hw9.MainViewModel" />
+    <variable name="viewModel"  type="csci571.hw9.viewmodels.MainViewModel" />
   </data>
 <android.support.constraint.ConstraintLayout
   android:layout_width="match_parent"
@@ -49,7 +49,7 @@
   android:visibility="@{viewModel.isLoading?View.GONE:View.VISIBLE}"
   android:name="csci571.hw9.Fragment.ResultFragment"
   app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-  tools:context=".Fragment.ResultFragment"
+  tools:context=".fragment.ResultFragment"
   tools:listitem="@layout/recycler_view_item"
   />
 </android.support.constraint.ConstraintLayout>
