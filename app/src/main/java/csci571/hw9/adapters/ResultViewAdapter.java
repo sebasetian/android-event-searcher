@@ -5,6 +5,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -88,9 +89,10 @@ public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.Re
                     .findViewById(R.id.favBtn)).setImageResource(R.drawable.heart_outline_black);
             }
             mDisposable.add(
-            PrefHelper.prefChangeSource.subscribe(new Consumer<String>() {
+                helper.prefChangeSource.subscribe(new Consumer<String>() {
                 @Override
                 public void accept(String s) throws Exception {
+                    Log.d("prefChangeSource", "accept: ");
                     if (s.equals(id)) {
                         if (helper.contains(id)) {
                             mViewModel.makeToast(mEvent.name + " was added to favorites");

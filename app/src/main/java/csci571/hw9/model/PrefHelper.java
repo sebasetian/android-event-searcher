@@ -15,21 +15,22 @@ public class PrefHelper {
     private SharedPreferences mPref;
     private static final String NAME = "fav";
     private Gson gson = new Gson();
-    public static PublishSubject<String> prefChangeSource = PublishSubject.create();
+    public PublishSubject<String> prefChangeSource = PublishSubject.create();
+    private OnSharedPreferenceChangeListener listener = new OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            prefChangeSource.onNext(key);
+        }
+    };
     PrefHelper(SharedPreferences pref) {
         mPref = pref;
+        mPref.registerOnSharedPreferenceChangeListener(listener);
     }
     public static void initInstance(Context context) {
         if (prefHelper == null) {
             SharedPreferences pref = context.getSharedPreferences(NAME,Context.MODE_PRIVATE);
             prefHelper = new PrefHelper(pref);
-            pref.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-                                                      String key) {
-                    prefChangeSource.onNext(key);
-                }
-            });
+
         }
     }
     public static PrefHelper getInstance() {

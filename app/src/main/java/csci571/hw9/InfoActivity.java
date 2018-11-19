@@ -65,7 +65,7 @@ public class InfoActivity extends AppCompatActivity implements EventInfoFragment
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                onOptionsItemSelected(item);
+                optionsItemSelected(item);
                 return false;
             }
         });
@@ -89,7 +89,7 @@ public class InfoActivity extends AppCompatActivity implements EventInfoFragment
             fav.setIcon(R.drawable.heart_outline_white);
         }
         mDisposable.add(
-        PrefHelper.prefChangeSource.subscribe(new Consumer<String>() {
+            helper.prefChangeSource.subscribe(new Consumer<String>() {
             @Override
             public void accept(String s) throws Exception {
                 if (s.equals(gson.fromJson(getIntent().getStringExtra("EVENT"), SearchEventSchema.class).id))
@@ -102,23 +102,26 @@ public class InfoActivity extends AppCompatActivity implements EventInfoFragment
         }));
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public void optionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_twitter:
-
-                return true;
-
+                openTwitter();
+                break;
             case R.id.action_favorite:
                 helper.switchPref(mViewModel.getSearchEvent().id,mViewModel.getSearchEvent());
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+                break;
 
         }
     }
-
+    private void openTwitter() {
+        SearchEventSchema event = mViewModel.getSearchEvent();
+        String url = "https://twitter.com/intent/tweet?";
+        String text = "text=Check out " + event.name + "located at " + event._embedded.venues[0].name + ". Website: " + event.url;
+        String hashTag = "&hashtags=CSCI571EventSearch";
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url + text + hashTag));
+        startActivity(intent);
+    }
     @Override
     public void onFragmentInteraction(Uri uri) {
 
