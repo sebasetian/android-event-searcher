@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import csci571.hw9.adapters.ResultViewAdapter;
 import csci571.hw9.model.PrefHelper;
 import csci571.hw9.model.WebServices;
+import csci571.hw9.schema.PublicDate;
 import csci571.hw9.schema.SearchEventSchema;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
@@ -22,6 +23,7 @@ public class MainViewModel extends ViewModel {
     private List<SearchEventSchema> mSearchEvents;
     public ObservableBoolean isLoading = new ObservableBoolean(true);
     public PublishSubject<String> toastSource = PublishSubject.create();
+    public PublishSubject<SearchEventSchema> infoSource = PublishSubject.create();
     public void init() {
         mDisposable.add(mWebservice.searchEventsSource.subscribe(new Consumer<List<SearchEventSchema>>() {
             @Override
@@ -53,6 +55,9 @@ public class MainViewModel extends ViewModel {
     }
     public void makeToast(String text) {
         toastSource.onNext(text);
+    }
+    public void goToInfo(SearchEventSchema event) {
+        infoSource.onNext(event);
     }
 
     public ResultViewAdapter getmResultViewAdapter() {

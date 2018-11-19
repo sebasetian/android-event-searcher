@@ -2,6 +2,7 @@ package csci571.hw9.fragment;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import csci571.hw9.InfoActivity;
 import csci571.hw9.adapters.ResultViewAdapter;
+import csci571.hw9.schema.SearchEventSchema;
 import csci571.hw9.viewmodel.MainViewModel;
 import csci571.hw9.R;
 import csci571.hw9.databinding.ResultDataBinding;
@@ -60,6 +63,15 @@ public class ResultFragment extends Fragment {
                 Toast.makeText(getActivity(),s,Toast.LENGTH_SHORT).show();
             }
         }));
+        mDisposable.add(
+            mViewModel.infoSource.subscribe(new Consumer<SearchEventSchema>() {
+                @Override
+                public void accept(SearchEventSchema searchEventSchema) throws Exception {
+                    Intent intent = new Intent(getActivity(), InfoActivity.class);
+                    intent.putExtra("EVENT_TITLE",searchEventSchema.name);
+                    startActivity(intent);
+                }
+            }));
         resultDataBinding.setViewModel(mViewModel);
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
@@ -92,5 +104,10 @@ public class ResultFragment extends Fragment {
 
         // TODO: Update argument type and name
 
+    }
+    @Override
+    public void onDestroy() {
+        mDisposable.dispose();
+        super.onDestroy();
     }
 }

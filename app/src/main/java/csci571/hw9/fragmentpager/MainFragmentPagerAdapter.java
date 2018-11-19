@@ -8,10 +8,10 @@ import csci571.hw9.fragment.FavoriteFragment;
 import csci571.hw9.fragment.FormFragment;
 import csci571.hw9.R;
 
-public class fragmentPagerAdapter extends FragmentPagerAdapter {
+public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
-    public fragmentPagerAdapter(FragmentManager fm, Context context) {
+    public MainFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         mContext = context;
     }

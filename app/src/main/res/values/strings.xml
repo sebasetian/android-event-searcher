@@ -15,4 +15,12 @@
   <string name="title_dashboard">Dashboard</string>
   <string name="title_notifications">Notifications</string>
   <string name="type_image">Type Image</string>
+  <string name="eventTitle">EVENT</string>
+  <string name="artistTitle">ARTIST(S)</string>
+  <string name="venueTitle">VENUE</string>
+  <string name="upcomingTitle">UPCOMING</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="twitter">twitter</string>
 </resources>

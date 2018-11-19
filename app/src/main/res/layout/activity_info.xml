@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".InfoActivity">
+
+  <android.support.v7.widget.Toolbar
+    android:id="@+id/resultToolbar"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:minHeight="?attr/actionBarSize"
+    android:theme="?attr/actionBarTheme"
+    android:elevation="4dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" tools:targetApi="lollipop"/>
+
+  <android.support.design.widget.TabLayout
+    android:id="@+id/tabLayout2"
+    android:layout_width="0dp"
+    android:layout_height="60dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/resultToolbar"
+    app:tabBackground="@color/colorPrimary"
+    app:tabSelectedTextColor="@android:color/white"
+    app:tabTextColor="@android:color/darker_gray">
+
+    <android.support.design.widget.TabItem
+      android:id="@+id/eventInfo"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:icon="@drawable/info_outline"
+      android:text="@string/eventTitle"/>
+    <android.support.design.widget.TabItem
+      android:id="@+id/artistInfo"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:icon="@drawable/artist"
+      android:text="@string/artistTitle"/>
+    <android.support.design.widget.TabItem
+      android:id="@+id/venueInfo"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:icon="@drawable/venue"
+      android:text="@string/venueTitle"/>
+    <android.support.design.widget.TabItem
+      android:id="@+id/upcomingInfo"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:icon="@drawable/upcoming"
+      android:text="@string/upcomingTitle"/>
+  </android.support.design.widget.TabLayout>
+  <android.support.v4.view.ViewPager
+    android:id="@+id/infoViewPager"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tabLayout2"/>
+</android.support.constraint.ConstraintLayout>
