@@ -7,8 +7,8 @@ public class SearchEventSchema {
     public String url;
     public Sales sales;
     public Dates dates;
-    public classification[] classifications;
-    public PriceRange[] priceRanges ;
+    public Classification[] classifications;
+    public PriceRange[] priceRanges;
     public Seatmap seatmap;
     public EmbeddedVenues _embedded;
 }

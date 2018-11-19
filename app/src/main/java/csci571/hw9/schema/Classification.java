@@ -1,6 +1,6 @@
 package csci571.hw9.schema;
 
-public class classification {
+public class Classification {
     public ClassificationType segment;
     public ClassificationType genre;
     public ClassificationType subGenre;

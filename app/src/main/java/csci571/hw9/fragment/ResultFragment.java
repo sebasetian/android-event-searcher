@@ -1,7 +1,5 @@
 package csci571.hw9.fragment;
 
-import static android.content.ContentValues.TAG;
-
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -13,15 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import csci571.hw9.adapters.ResultViewAdapter;
 import csci571.hw9.viewmodel.MainViewModel;
 import csci571.hw9.R;
 import csci571.hw9.databinding.ResultDataBinding;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 
-/**
- * A fragment representing a list of Items. <p /> Activities containing this fragment MUST implement
- * the {@link OnListFragmentInteractionListener} interface.
- */
+
 public class ResultFragment extends Fragment {
 
     // TODO: Customize parameter argument names
@@ -30,10 +28,7 @@ public class ResultFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private MainViewModel mViewModel;
     public ResultDataBinding resultDataBinding;
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon
-     * screen orientation changes).
-     */
+    public CompositeDisposable mDisposable = new CompositeDisposable();
     public ResultFragment() {
     }
 
@@ -58,6 +53,13 @@ public class ResultFragment extends Fragment {
         View view = resultDataBinding.getRoot();
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mViewModel.init();
+        mDisposable.add(
+        mViewModel.toastSource.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+                Toast.makeText(getActivity(),s,Toast.LENGTH_SHORT).show();
+            }
+        }));
         resultDataBinding.setViewModel(mViewModel);
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
@@ -86,15 +88,6 @@ public class ResultFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-    /**
-     * This interface must be implemented by activities that contain this fragment to allow an
-     * interaction in this fragment to be communicated to the activity and potentially other
-     * fragments contained in that activity.
-     * <p/>
-     * See the Android Training lesson <a href= "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
 
         // TODO: Update argument type and name

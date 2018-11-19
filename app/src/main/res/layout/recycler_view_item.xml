@@ -3,8 +3,7 @@
   xmlns:tools="http://schemas.android.com/tools">
   <data class="ResultItemDataBinding">
     <import type="android.view.View" />
-    <variable name="viewModel"  type="csci571.hw9.viewmodel.MainViewModel" />
-    <variable name="data"  type="csci571.hw9.model.ResultField" />
+    <variable name="event"  type="csci571.hw9.schema.SearchEventSchema" />
   </data>
 <LinearLayout android:orientation="horizontal"
               android:padding="8dp"
