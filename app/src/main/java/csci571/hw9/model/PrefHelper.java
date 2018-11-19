@@ -2,8 +2,10 @@ package csci571.hw9.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import com.google.gson.Gson;
 import csci571.hw9.schema.SearchEventSchema;
+import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +15,7 @@ public class PrefHelper {
     private SharedPreferences mPref;
     private static final String NAME = "fav";
     private Gson gson = new Gson();
+    public static PublishSubject<String> prefChangeSource;
     PrefHelper(SharedPreferences pref) {
         mPref = pref;
     }
@@ -20,6 +23,13 @@ public class PrefHelper {
         if (prefHelper == null) {
             SharedPreferences pref = context.getSharedPreferences(NAME,Context.MODE_PRIVATE);
             prefHelper = new PrefHelper(pref);
+            pref.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+                                                      String key) {
+                    prefChangeSource.onNext(key);
+                }
+            });
         }
     }
     public static PrefHelper getInstance() {
@@ -53,8 +63,5 @@ public class PrefHelper {
     public void switchPref(String key,SearchEventSchema val) {
         if (contains(key)) delete(key);
         else put(key,val);
-    }
-    public SharedPreferences getPref() {
-        return mPref;
     }
 }

@@ -27,15 +27,18 @@ import csci571.hw9.fragmentpager.MainFragmentPagerAdapter;
 import csci571.hw9.model.PrefHelper;
 import csci571.hw9.schema.SearchEventSchema;
 import csci571.hw9.viewmodel.InfoViewModel;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 
 public class InfoActivity extends AppCompatActivity implements EventInfoFragment.OnFragmentInteractionListener,
                                                                 ArtistFragment.OnFragmentInteractionListener,
                                                                VenueFragment.OnFragmentInteractionListener,
                                                                UpcomingFragment.OnFragmentInteractionListener {
 
-    InfoViewModel mViewModel;
-    PrefHelper helper = PrefHelper.getInstance();
-    Gson gson = new Gson();
+    private InfoViewModel mViewModel;
+    private PrefHelper helper = PrefHelper.getInstance();
+    private Gson gson = new Gson();
+    private CompositeDisposable mDisposable = new CompositeDisposable();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,7 @@ public class InfoActivity extends AppCompatActivity implements EventInfoFragment
         Toolbar toolbar = (Toolbar) findViewById(R.id.resultToolbar);
         toolbar.setTitle(mViewModel.getSearchEvent().name);
         toolbar.inflateMenu(R.menu.otherbtn);
+        onPrepareOptionsMenu(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
@@ -58,7 +62,13 @@ public class InfoActivity extends AppCompatActivity implements EventInfoFragment
                 onBackPressed();
             }
         });
-
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                onOptionsItemSelected(item);
+                return false;
+            }
+        });
 
 
     }
@@ -70,29 +80,26 @@ public class InfoActivity extends AppCompatActivity implements EventInfoFragment
         finish();
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(Toolbar toolbar) {
+        Menu menu = toolbar.getMenu();
         final MenuItem fav = menu.findItem(R.id.action_favorite);
         if (helper.contains(gson.fromJson(getIntent().getStringExtra("EVENT"), SearchEventSchema.class).id)) {
             fav.setIcon(R.drawable.heart_fill_white);
         } else {
             fav.setIcon(R.drawable.heart_outline_white);
         }
-        helper.getPref().registerOnSharedPreferenceChangeListener(
-            new OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-                                                      String key) {
-                    if (key.equals(gson.fromJson(getIntent().getStringExtra("EVENT"), SearchEventSchema.class).id)) {
-                        if (helper.contains(key)) {
-                            fav.setIcon(R.drawable.heart_fill_white);
-                        } else {
-                            fav.setIcon(R.drawable.heart_outline_white);
-                        }
+        mDisposable.add(
+        PrefHelper.prefChangeSource.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+                if (s.equals(gson.fromJson(getIntent().getStringExtra("EVENT"), SearchEventSchema.class).id))
+                    if (helper.contains(s)) {
+                        fav.setIcon(R.drawable.heart_fill_white);
+                    } else {
+                        fav.setIcon(R.drawable.heart_outline_white);
                     }
                 }
-            });
-        return true;
+        }));
     }
 
     @Override

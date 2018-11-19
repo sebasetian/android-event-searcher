@@ -83,7 +83,6 @@ public class ResultFragment extends Fragment {
         mViewModel.setResultViewAdapter(adapter);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        Log.d("ResultFragment", "onCreateView: ");
         return view;
     }
 
@@ -114,6 +113,8 @@ public class ResultFragment extends Fragment {
     @Override
     public void onDestroy() {
         mDisposable.dispose();
+        RecyclerView recyclerView = (RecyclerView) resultDataBinding.getRoot().findViewById(R.id.list);
+        recyclerView.setAdapter(null);
         Log.d("ResultFragment", "onDestroy: ");
         super.onDestroy();
     }

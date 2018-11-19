@@ -16,12 +16,15 @@ import csci571.hw9.databinding.ResultItemDataBinding;
 import csci571.hw9.model.PrefHelper;
 import csci571.hw9.schema.*;
 import csci571.hw9.viewmodel.ResultViewModel;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.ResultViewHolder> {
     private List<SearchEventSchema> mEvents = new ArrayList<>();
     private ResultViewModel mViewModel;
+    private CompositeDisposable mDisposable = new CompositeDisposable();
     public void setData(List<SearchEventSchema> list) {
         mEvents = list;
         notifyDataSetChanged();
@@ -50,6 +53,11 @@ public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.Re
         return mEvents.size();
     }
 
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+
+    }
+
     class ResultViewHolder extends RecyclerView.ViewHolder {
         View mView;
         SearchEventSchema mEvent;
@@ -71,7 +79,7 @@ public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.Re
         }
         void setPref() {
             final String id = mEvent.id;
-            PrefHelper helper = PrefHelper.getInstance();
+            final PrefHelper helper = PrefHelper.getInstance();
             if (helper.contains(id)) {
                 ((ImageView) mView
                     .findViewById(R.id.favBtn)).setImageResource(R.drawable.heart_fill_red);
@@ -79,24 +87,27 @@ public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.Re
                 ((ImageView) mView
                     .findViewById(R.id.favBtn)).setImageResource(R.drawable.heart_outline_black);
             }
-            helper.getPref().registerOnSharedPreferenceChangeListener(
-                new OnSharedPreferenceChangeListener() {
-                    @Override
-                    public void onSharedPreferenceChanged(SharedPreferences mPref,
-                                                          String key) {
-                        if (key.equals(id)) {
-                            if (mPref.contains(id)) {
-                                mViewModel.makeToast(mEvent.name + " was added to favorites");
-                                ((ImageView) mView
-                                    .findViewById(R.id.favBtn)).setImageResource(R.drawable.heart_fill_red);
-                            } else {
-                                mViewModel.makeToast(mEvent.name + " was removed to favorites");
-                                ((ImageView) mView
-                                    .findViewById(R.id.favBtn)).setImageResource(R.drawable.heart_outline_black);
-                            }
+            mDisposable.add(
+            PrefHelper.prefChangeSource.subscribe(new Consumer<String>() {
+                @Override
+                public void accept(String s) throws Exception {
+                    if (s.equals(id)) {
+                        if (helper.contains(id)) {
+                            mViewModel.makeToast(mEvent.name + " was added to favorites");
+                            ((ImageView) mView
+                                .findViewById(R.id.favBtn))
+                                .setImageResource(R.drawable.heart_fill_red);
+                        } else {
+                            mViewModel.makeToast(mEvent.name + " was removed to favorites");
+                            ((ImageView) mView
+                                .findViewById(R.id.favBtn))
+                                .setImageResource(R.drawable.heart_outline_black);
                         }
                     }
-                });
+                }
+            }));
+
+
         }
         void bindViewModel(final ResultViewModel viewModel) {
             mViewModel = viewModel;
