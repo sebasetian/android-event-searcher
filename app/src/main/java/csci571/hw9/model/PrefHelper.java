@@ -50,6 +50,10 @@ public class PrefHelper {
     public boolean contains(String key) {
         return mPref.contains(key);
     }
+    public void switchPref(String key,SearchEventSchema val) {
+        if (contains(key)) delete(key);
+        else put(key,val);
+    }
     public SharedPreferences getPref() {
         return mPref;
     }

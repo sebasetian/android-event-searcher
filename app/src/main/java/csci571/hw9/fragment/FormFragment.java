@@ -78,9 +78,7 @@ public class FormFragment extends Fragment {
                             @Override
                             public void onSuccess(Location location) {
                                 mViewModel.currLocationSource.onNext(location);
-                                Intent intent = new Intent(getActivity(),ResultActivity.class);
-                                Log.d("Form Fragment", "getLocation: permission granted start");
-                                startActivity(intent);
+                                navigateToResult();
                             }});
                 }
             }
@@ -108,16 +106,19 @@ public class FormFragment extends Fragment {
                         @Override
                         public void onSuccess(Location location) {
                             mViewModel.currLocationSource.onNext(location);
-                            Intent intent = new Intent(getActivity(),ResultActivity.class);
-                            Log.d("Form Fragment", "getLocation: onsuccess start");
-                            startActivity(intent);
+                            navigateToResult();
                         }});
             } else {
                 mViewModel.getLocationFromAddress();
-                Intent intent = new Intent(getActivity(),ResultActivity.class);
-                Log.d("Form Fragment", "getLocation: not here start");
-                startActivity(intent);
+                navigateToResult();
             }
         }
     }
+    private void navigateToResult() {
+        Intent intent = new Intent(getActivity(),ResultActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Log.d("Form Fragment", "getLocation: not here start");
+        startActivity(intent);
+    }
+
 }

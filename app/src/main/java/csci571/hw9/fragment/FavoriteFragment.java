@@ -8,12 +8,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import csci571.hw9.viewmodel.MainViewModel;
+import csci571.hw9.viewmodel.ResultViewModel;
 import csci571.hw9.R;
 
 public class FavoriteFragment extends Fragment {
 
-    private MainViewModel mViewModel;
+    private ResultViewModel mViewModel;
 
     public static FavoriteFragment newInstance() {
         return new FavoriteFragment();
@@ -28,7 +28,7 @@ public class FavoriteFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(ResultViewModel.class);
         // TODO: Use the ViewModel
     }
 

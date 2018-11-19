@@ -13,10 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import com.google.gson.Gson;
 import csci571.hw9.InfoActivity;
 import csci571.hw9.adapters.ResultViewAdapter;
 import csci571.hw9.schema.SearchEventSchema;
-import csci571.hw9.viewmodel.MainViewModel;
+import csci571.hw9.viewmodel.ResultViewModel;
 import csci571.hw9.R;
 import csci571.hw9.databinding.ResultDataBinding;
 import io.reactivex.disposables.CompositeDisposable;
@@ -29,7 +30,7 @@ public class ResultFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private OnListFragmentInteractionListener mListener;
-    private MainViewModel mViewModel;
+    private ResultViewModel mViewModel;
     public ResultDataBinding resultDataBinding;
     public CompositeDisposable mDisposable = new CompositeDisposable();
     public ResultFragment() {
@@ -47,6 +48,8 @@ public class ResultFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("ResultFragment", "onCreate: ");
+
     }
 
     @Override
@@ -54,8 +57,9 @@ public class ResultFragment extends Fragment {
                              Bundle savedInstanceState) {
         resultDataBinding = DataBindingUtil.inflate(inflater,R.layout.result_item_list,container,false);
         View view = resultDataBinding.getRoot();
-        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mViewModel = ViewModelProviders.of(getActivity()).get(ResultViewModel.class);
         mViewModel.init();
+        Log.d("ResultFragment", "onCreateView: " + getActivity());
         mDisposable.add(
         mViewModel.toastSource.subscribe(new Consumer<String>() {
             @Override
@@ -67,16 +71,16 @@ public class ResultFragment extends Fragment {
             mViewModel.infoSource.subscribe(new Consumer<SearchEventSchema>() {
                 @Override
                 public void accept(SearchEventSchema searchEventSchema) throws Exception {
+                    Gson gson = new Gson();
                     Intent intent = new Intent(getActivity(), InfoActivity.class);
-                    intent.putExtra("EVENT_TITLE",searchEventSchema.name);
+                    intent.putExtra("EVENT",gson.toJson(searchEventSchema));
                     startActivity(intent);
                 }
             }));
         resultDataBinding.setViewModel(mViewModel);
-        Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         ResultViewAdapter adapter = new ResultViewAdapter();
-        mViewModel.setmResultViewAdapter(adapter);
+        mViewModel.setResultViewAdapter(adapter);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         Log.d("ResultFragment", "onCreateView: ");
@@ -99,6 +103,8 @@ public class ResultFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        Log.d("ResultFragment", "onDetach: ");
+
     }
     public interface OnListFragmentInteractionListener {
 
@@ -108,6 +114,7 @@ public class ResultFragment extends Fragment {
     @Override
     public void onDestroy() {
         mDisposable.dispose();
+        Log.d("ResultFragment", "onDestroy: ");
         super.onDestroy();
     }
 }

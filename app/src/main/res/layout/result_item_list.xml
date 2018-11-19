@@ -5,7 +5,7 @@
   xmlns:tools="http://schemas.android.com/tools">
   <data class="ResultDataBinding">
     <import type="android.view.View" />
-    <variable name="viewModel"  type="csci571.hw9.viewmodel.MainViewModel" />
+    <variable name="viewModel"  type="csci571.hw9.viewmodel.ResultViewModel" />
   </data>
 <android.support.constraint.ConstraintLayout
   android:layout_width="match_parent"

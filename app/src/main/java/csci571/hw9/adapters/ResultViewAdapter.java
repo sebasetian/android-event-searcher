@@ -15,18 +15,18 @@ import csci571.hw9.R;
 import csci571.hw9.databinding.ResultItemDataBinding;
 import csci571.hw9.model.PrefHelper;
 import csci571.hw9.schema.*;
-import csci571.hw9.viewmodel.MainViewModel;
+import csci571.hw9.viewmodel.ResultViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.ResultViewHolder> {
     private List<SearchEventSchema> mEvents = new ArrayList<>();
-    private MainViewModel mViewModel;
+    private ResultViewModel mViewModel;
     public void setData(List<SearchEventSchema> list) {
         mEvents = list;
         notifyDataSetChanged();
     }
-    public void setViewModel(MainViewModel viewModel) {
+    public void setViewModel(ResultViewModel viewModel) {
         mViewModel = viewModel;
         notifyDataSetChanged();
     }
@@ -54,7 +54,7 @@ public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.Re
         View mView;
         SearchEventSchema mEvent;
         ResultItemDataBinding mBinding;
-        MainViewModel mViewModel;
+        ResultViewModel mViewModel;
         ResultViewHolder(View itemView) {
             super(itemView);
         }
@@ -98,7 +98,7 @@ public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.Re
                     }
                 });
         }
-        void bindViewModel(final MainViewModel viewModel) {
+        void bindViewModel(final ResultViewModel viewModel) {
             mViewModel = viewModel;
             ((ImageView) mView.findViewById(R.id.favBtn)).setOnClickListener(new OnClickListener() {
                 @Override

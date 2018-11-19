@@ -5,11 +5,12 @@
   <item
     android:id="@+id/action_favorite"
     android:title="@string/favorite"
-    app:showAsAction="ifRoom"/>
+    app:showAsAction="always"/>
 
   <!-- Settings, should always be in the overflow -->
   <item android:id="@+id/action_twitter"
     android:title="@string/twitter"
-    app:showAsAction="ifRoom"/>
+    android:icon="@drawable/twitter_ic"
+    app:showAsAction="always"/>
 
 </menu>

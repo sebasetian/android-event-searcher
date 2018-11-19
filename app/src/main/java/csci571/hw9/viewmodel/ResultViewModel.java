@@ -9,14 +9,13 @@ import com.google.gson.Gson;
 import csci571.hw9.adapters.ResultViewAdapter;
 import csci571.hw9.model.PrefHelper;
 import csci571.hw9.model.WebServices;
-import csci571.hw9.schema.PublicDate;
 import csci571.hw9.schema.SearchEventSchema;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 import java.util.List;
 
-public class MainViewModel extends ViewModel {
+public class ResultViewModel extends ViewModel {
     private WebServices mWebservice = WebServices.getInstance();
     private CompositeDisposable mDisposable = new CompositeDisposable();
     private ResultViewAdapter mResultViewAdapter;
@@ -24,16 +23,15 @@ public class MainViewModel extends ViewModel {
     public ObservableBoolean isLoading = new ObservableBoolean(true);
     public PublishSubject<String> toastSource = PublishSubject.create();
     public PublishSubject<SearchEventSchema> infoSource = PublishSubject.create();
+
     public void init() {
         mDisposable.add(mWebservice.searchEventsSource.subscribe(new Consumer<List<SearchEventSchema>>() {
             @Override
             public void accept(List<SearchEventSchema> searchEventSchemas) throws Exception {
                 mSearchEvents = searchEventSchemas;
                 if (mResultViewAdapter != null) {
-                    Log.d("MainViewModel", "accept: setData");
                     mResultViewAdapter.setData(mSearchEvents);
                 }
-                Log.d("MainViewModel", "accept: ");
                 isLoading.set(false);
             }
         }));
@@ -60,18 +58,14 @@ public class MainViewModel extends ViewModel {
         infoSource.onNext(event);
     }
 
-    public ResultViewAdapter getmResultViewAdapter() {
-        return mResultViewAdapter;
-    }
-
-    public void setmResultViewAdapter(ResultViewAdapter mResultViewAdapter) {
+    public void setResultViewAdapter(ResultViewAdapter mResultViewAdapter) {
         this.mResultViewAdapter = mResultViewAdapter;
         mResultViewAdapter.setViewModel(this);
         if (mSearchEvents != null) {
             mResultViewAdapter.setData(mSearchEvents);
             mResultViewAdapter.notifyDataSetChanged();
         }
-        Log.d("MainViewModel", "setmResultViewAdapter: ");
+
     }
 
 }
