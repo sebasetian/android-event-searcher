@@ -15,7 +15,7 @@ public class PrefHelper {
     private SharedPreferences mPref;
     private static final String NAME = "fav";
     private Gson gson = new Gson();
-    public static PublishSubject<String> prefChangeSource;
+    public static PublishSubject<String> prefChangeSource = PublishSubject.create();
     PrefHelper(SharedPreferences pref) {
         mPref = pref;
     }
