@@ -30,7 +30,6 @@ public class PrefHelper {
         if (prefHelper == null) {
             SharedPreferences pref = context.getSharedPreferences(NAME,Context.MODE_PRIVATE);
             prefHelper = new PrefHelper(pref);
-
         }
     }
     public static PrefHelper getInstance() {

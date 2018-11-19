@@ -57,21 +57,21 @@
       android:layout_height="wrap_content"
       app:barrierAllowsGoneWidgets="false"
       app:barrierDirection="bottom"
-      app:constraint_referenced_ids="ArtistListText"/>
+      app:constraint_referenced_ids="ArtistListText,VenueText"/>
     <TextView
       android:id="@+id/textView6"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="24dp"
       android:text="Time"
-      app:layout_constraintStart_toStartOf="@+id/textView4"
-      app:layout_constraintTop_toBottomOf="@+id/textView4"/>
+      app:layout_constraintStart_toStartOf="@+id/textView2"
+      app:layout_constraintTop_toTopOf="@+id/barrier2"/>
     <TextView
       android:id="@+id/TimeText"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="TextView"
-      app:layout_constraintStart_toStartOf="@+id/VenueText"
+      app:layout_constraintStart_toStartOf="@+id/ArtistListText"
       app:layout_constraintTop_toTopOf="@+id/textView6"/>
     <android.support.constraint.Barrier
       android:id="@+id/barrier3"
@@ -79,7 +79,7 @@
       android:layout_height="wrap_content"
       app:barrierAllowsGoneWidgets="false"
       app:barrierDirection="bottom"
-      app:constraint_referenced_ids="ArtistListText"/>
+      app:constraint_referenced_ids="ArtistListText,VenueText,TimeText"/>
     <TextView
       android:id="@+id/textView8"
       android:layout_width="wrap_content"
@@ -87,13 +87,13 @@
       android:layout_marginTop="24dp"
       android:text="Category"
       app:layout_constraintStart_toStartOf="@+id/textView6"
-      app:layout_constraintTop_toBottomOf="@+id/textView6"/>
+      app:layout_constraintTop_toTopOf="@+id/barrier3"/>
     <TextView
       android:id="@+id/CategoryText"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="TextView"
-      app:layout_constraintStart_toStartOf="@+id/TimeText"
+      app:layout_constraintStart_toStartOf="@+id/ArtistListText"
       app:layout_constraintTop_toTopOf="@+id/textView8"/>
     <android.support.constraint.Barrier
       android:id="@+id/barrier4"
@@ -101,21 +101,21 @@
       android:layout_height="wrap_content"
       app:barrierAllowsGoneWidgets="false"
       app:barrierDirection="bottom"
-      app:constraint_referenced_ids="ArtistListText"/>
+      app:constraint_referenced_ids="ArtistListText,VenueText,TimeText,CategoryText"/>
     <TextView
       android:id="@+id/textView10"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="24dp"
       android:text="Price Range"
-      app:layout_constraintStart_toStartOf="@+id/textView8"
-      app:layout_constraintTop_toBottomOf="@+id/textView8"/>
+      app:layout_constraintStart_toStartOf="@+id/textView2"
+      app:layout_constraintTop_toTopOf="@+id/barrier4"/>
     <TextView
       android:id="@+id/PriceText"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="TextView"
-      app:layout_constraintStart_toStartOf="@+id/CategoryText"
+      app:layout_constraintStart_toStartOf="@+id/ArtistListText"
       app:layout_constraintTop_toTopOf="@+id/textView10"/>
     <android.support.constraint.Barrier
       android:id="@+id/barrier5"
@@ -123,21 +123,21 @@
       android:layout_height="wrap_content"
       app:barrierAllowsGoneWidgets="false"
       app:barrierDirection="bottom"
-      app:constraint_referenced_ids="ArtistListText"/>
+      app:constraint_referenced_ids="ArtistListText,VenueText,TimeText,CategoryText,PriceText"/>
     <TextView
       android:id="@+id/textView12"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="24dp"
       android:text="Ticket Status"
-      app:layout_constraintStart_toStartOf="@+id/textView10"
-      app:layout_constraintTop_toBottomOf="@+id/textView10"/>
+      app:layout_constraintStart_toStartOf="@+id/textView2"
+      app:layout_constraintTop_toTopOf="@+id/barrier5"/>
     <TextView
       android:id="@+id/StatusText"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="TextView"
-      app:layout_constraintStart_toStartOf="@+id/PriceText"
+      app:layout_constraintStart_toStartOf="@+id/ArtistListText"
       app:layout_constraintTop_toTopOf="@+id/textView12"/>
     <android.support.constraint.Barrier
       android:id="@+id/barrier6"
@@ -145,21 +145,21 @@
       android:layout_height="wrap_content"
       app:barrierAllowsGoneWidgets="false"
       app:barrierDirection="bottom"
-      app:constraint_referenced_ids="ArtistListText"/>
+      app:constraint_referenced_ids="ArtistListText,VenueText,TimeText,CategoryText,PriceText,StatusText"/>
     <TextView
       android:id="@+id/textView14"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="24dp"
       android:text="Buy Ticket At"
-      app:layout_constraintStart_toStartOf="@+id/textView12"
-      app:layout_constraintTop_toBottomOf="@+id/textView12"/>
+      app:layout_constraintStart_toStartOf="@+id/textView2"
+      app:layout_constraintTop_toTopOf="@+id/barrier6"/>
     <TextView
       android:id="@+id/TicketmasterUrl"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="Ticketmaster"
-      app:layout_constraintStart_toStartOf="@+id/StatusText"
+      app:layout_constraintStart_toStartOf="@+id/ArtistListText"
       app:layout_constraintTop_toTopOf="@+id/textView14"/>
     <android.support.constraint.Barrier
       android:id="@+id/barrier7"
@@ -167,7 +167,7 @@
       android:layout_height="wrap_content"
       app:barrierAllowsGoneWidgets="false"
       app:barrierDirection="bottom"
-      app:constraint_referenced_ids="ArtistListText"/>
+      app:constraint_referenced_ids="ArtistListText,VenueText,TimeText,CategoryText,PriceText,StatusText,TicketmasterUrl"/>
     <TextView
       android:id="@+id/textView16"
       android:layout_width="wrap_content"
@@ -175,13 +175,13 @@
       android:layout_marginTop="24dp"
       android:text="Seat Map"
       app:layout_constraintStart_toStartOf="@+id/textView14"
-      app:layout_constraintTop_toBottomOf="@+id/textView14"/>
+      app:layout_constraintTop_toTopOf="@+id/barrier7"/>
     <TextView
       android:id="@+id/SeatMapUrl"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="View Here"
-      app:layout_constraintStart_toStartOf="@+id/TicketmasterUrl"
+      app:layout_constraintStart_toStartOf="@+id/ArtistListText"
       app:layout_constraintTop_toTopOf="@+id/textView16"/>
   </android.support.constraint.ConstraintLayout>
 </layout>
