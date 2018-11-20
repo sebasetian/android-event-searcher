@@ -38,6 +38,7 @@ public class ResultFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         Log.d("ResultFragment", "onCreate: ");
 
@@ -97,8 +98,6 @@ public class ResultFragment extends Fragment {
 
     }
     public interface OnListFragmentInteractionListener {
-
-        // TODO: Update argument type and name
 
     }
     @Override

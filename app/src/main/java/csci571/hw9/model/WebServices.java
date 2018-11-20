@@ -9,6 +9,11 @@ import csci571.hw9.schema.LocationSchema;
 import csci571.hw9.schema.SearchEventSchema;
 import csci571.hw9.schema.SongkickEvent;
 import csci571.hw9.schema.SongkickVenueInfo;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +38,7 @@ public class WebServices extends BaseObservable {
     public PublishSubject<List<CustomImg>> imgSource = PublishSubject.create();
     public PublishSubject<Integer> venueInfoSource = PublishSubject.create();
     public PublishSubject<List<SongkickEvent>> upcomingEventSource = PublishSubject.create();
+    private CompositeDisposable mDisposable = new CompositeDisposable();
     public static synchronized WebServices getInstance(){
         if (instance == null) {
             instance = new WebServices();
@@ -113,7 +119,7 @@ public class WebServices extends BaseObservable {
                 else {
                     for (ArtistInfo artist:response.body()) {
                         if (artist.name.equals(name)) {
-                            artistSource.onNext(artist);
+                            searchImg(artist);
                             return;
                         }
                     }
@@ -123,12 +129,12 @@ public class WebServices extends BaseObservable {
 
             @Override
             public void onFailure(Call<List<ArtistInfo>> call, Throwable t) {
-                Log.d("webservice", "getArtist: request failed");
-                t.printStackTrace();
+
             }
         });
+        
     }
-    public void searchImg(String name) {
+    public void searchImg(final ArtistInfo artistInfo) {
         Log.d("webservice", "searchImg: ");
         Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -136,17 +142,16 @@ public class WebServices extends BaseObservable {
             .build();
         ImgSearchAPI api = retrofit.create(ImgSearchAPI.class);
 
-        api.searchImg(name).enqueue(new Callback<List<CustomImg>>() {
+        api.searchImg(artistInfo.name).enqueue(new Callback<List<CustomImg>>() {
             @Override
             public void onResponse(Call<List<CustomImg>> call, Response<List<CustomImg>> response) {
-                if(response.body() == null) imgSource.onNext(new ArrayList<CustomImg>());
-                else imgSource.onNext(response.body());
+                artistInfo.Imgs = response.body();
+                artistSource.onNext(artistInfo);
             }
 
             @Override
             public void onFailure(Call<List<CustomImg>> call, Throwable t) {
-                Log.d("webservice", "searchImg: request failed");
-                t.printStackTrace();
+
             }
         });
     }

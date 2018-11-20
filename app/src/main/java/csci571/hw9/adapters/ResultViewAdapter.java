@@ -151,8 +151,10 @@ public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.Re
         }
         void setText(SearchEventSchema event) {
             ((TextView) mView.findViewById(R.id.resultTitle)).setText(event.name);
-            ((TextView) mView
-                .findViewById(R.id.resultArtist)).setText(event._embedded.attractions[0].name);
+            if (event._embedded.attractions != null && event._embedded.attractions.length > 0) {
+                ((TextView) mView
+                    .findViewById(R.id.resultArtist)).setText(event._embedded.attractions[0].name);
+            }
             String Date = event.dates.start.localDate;
             if (event.dates.start.localTime != null) {
                 Date +=" " + event.dates.start.localTime;

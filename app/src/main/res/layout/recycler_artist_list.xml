@@ -3,13 +3,13 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
-  <data class="ResultDataBinding">
+  <data class="ArtistListDataBinding">
     <import type="android.view.View" />
     <variable name="viewModel"  type="csci571.hw9.viewmodel.InfoViewModel" />
   </data>
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <TextView
       android:id="@+id/textView"
       android:layout_width="122dp"
@@ -20,10 +20,10 @@
       android:layout_marginEnd="8dp"
       android:layout_marginLeft="16dp"
       android:layout_marginRight="8dp"
-      android:visibility="@{viewModel.isLoading?View.VISIBLE:View.GONE}"
       android:text="Searching Events ..."
+      android:visibility="@{viewModel.isLoading?View.VISIBLE:View.GONE}"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@+id/list"
+      app:layout_constraintEnd_toEndOf="@+id/artistListView"
       app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toEndOf="@+id/progressBar"
       app:layout_constraintTop_toTopOf="parent"/>
@@ -34,22 +34,22 @@
       android:layout_height="wrap_content"
       android:layout_marginBottom="8dp"
       android:visibility="@{viewModel.isLoading?View.VISIBLE:View.GONE}"
-      app:layout_constraintBottom_toBottomOf="@+id/list"
-      app:layout_constraintEnd_toEndOf="@+id/list"
+      app:layout_constraintBottom_toBottomOf="@+id/artistListView"
+      app:layout_constraintEnd_toEndOf="@+id/artistListView"
       app:layout_constraintHorizontal_bias="0.366"
-      app:layout_constraintStart_toStartOf="@+id/list"
-      app:layout_constraintTop_toTopOf="@+id/list"
+      app:layout_constraintStart_toStartOf="@+id/artistListView"
+      app:layout_constraintTop_toTopOf="@+id/artistListView"
       app:layout_constraintVertical_bias="0.505"/>
     <android.support.v7.widget.RecyclerView
-      android:id="@+id/list"
+      android:id="@+id/artistListView"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:name="csci571.hw9.Fragment.ResultFragment"
+      android:layout_height="wrap_content"
+      android:name="csci571.hw9.Fragment.ArtistFragment"
       android:visibility="@{viewModel.isLoading?View.GONE:View.VISIBLE}"
       app:layoutManager="android.support.v7.widget.LinearLayoutManager"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      tools:context=".fragment.ResultFragment"
+      tools:context=".fragment.ArtistFragment"
       tools:listitem="@layout/recycler_artist_item"/>
   </android.support.constraint.ConstraintLayout>
 </layout>

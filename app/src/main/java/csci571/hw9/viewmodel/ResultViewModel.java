@@ -63,7 +63,6 @@ public class ResultViewModel extends ViewModel {
         mResultViewAdapter.setViewModel(this);
         if (mSearchEvents != null) {
             mResultViewAdapter.setData(mSearchEvents);
-            mResultViewAdapter.notifyDataSetChanged();
         }
 
     }

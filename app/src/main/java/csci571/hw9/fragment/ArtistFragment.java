@@ -1,19 +1,28 @@
 package csci571.hw9.fragment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import csci571.hw9.R;
+import csci571.hw9.adapters.ArtistItemAdapter;
+import csci571.hw9.databinding.ArtistItemDataBinding;
+import csci571.hw9.databinding.ArtistListDataBinding;
+import csci571.hw9.viewmodel.InfoViewModel;
 
 public class ArtistFragment extends Fragment {
     private static ArtistFragment mFragment;
     private OnFragmentInteractionListener mListener;
-
+    public InfoViewModel mViewModel;
     public ArtistFragment() {
         // Required empty public constructor
     }
@@ -30,7 +39,17 @@ public class ArtistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_artist, container, false);
+        ArtistListDataBinding binding = DataBindingUtil.inflate(inflater,R.layout.recycler_artist_list,container,false);
+        mViewModel = ViewModelProviders.of(getActivity()).get(InfoViewModel.class);
+        View view = binding.getRoot();
+        binding.setViewModel(mViewModel);
+
+        RecyclerView rview = view.findViewById(R.id.artistListView);
+        ArtistItemAdapter adapter = new ArtistItemAdapter();
+        mViewModel.setArtistAdapter(adapter);
+        rview.setAdapter(adapter);
+        rview.setLayoutManager(new LinearLayoutManager(getActivity()));
+        return view;
     }
 
     public void onButtonPressed(Uri uri) {

@@ -51,6 +51,7 @@ public class InfoActivity extends AppCompatActivity implements EventInfoFragment
         mViewModel = ViewModelProviders.of(this).get(InfoViewModel.class);
         mViewModel.init(gson.fromJson(getIntent().getStringExtra("EVENT"), SearchEventSchema.class));
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.resultToolbar);
         toolbar.setTitle(mViewModel.getSearchEvent().name);
         toolbar.inflateMenu(R.menu.otherbtn);
