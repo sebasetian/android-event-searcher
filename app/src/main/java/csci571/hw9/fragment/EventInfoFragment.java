@@ -136,6 +136,14 @@ public class EventInfoFragment extends Fragment {
             }
         }
 
+        TextView StatusText = view.findViewById(R.id.StatusText);
+        if (event.dates == null || event.dates.status == null || event.dates.status.code == null) {
+            StatusText.setVisibility(View.GONE);
+            view.findViewById(R.id.StatusTitle).setVisibility(View.GONE);
+        } else {
+            StatusText.setText(event.dates.status.code);
+        }
+
         TextView TicketText = view.findViewById(R.id.TicketmasterUrl);
         if (event.url == null) {
             TicketText.setVisibility(View.GONE);

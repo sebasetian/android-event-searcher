@@ -36,15 +36,6 @@ public class ResultFragment extends Fragment {
     public ResultFragment() {
     }
 
-    @SuppressWarnings("unused")
-    public static ResultFragment newInstance(int columnCount) {
-        ResultFragment fragment = new ResultFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -2,9 +2,13 @@ package csci571.hw9.model;
 
 import android.databinding.BaseObservable;
 import android.util.Log;
+import csci571.hw9.schema.ArtistInfo;
 import csci571.hw9.schema.AutoCompleteSchema;
+import csci571.hw9.schema.CustomImg;
 import csci571.hw9.schema.LocationSchema;
 import csci571.hw9.schema.SearchEventSchema;
+import csci571.hw9.schema.SongkickEvent;
+import csci571.hw9.schema.SongkickVenueInfo;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,10 @@ public class WebServices extends BaseObservable {
     public PublishSubject<List<String>> autoCompleteSource = PublishSubject.create();
     public PublishSubject<LocationSchema> locationSource = PublishSubject.create();
     public PublishSubject<List<SearchEventSchema>> searchEventsSource = PublishSubject.create();
+    public PublishSubject<ArtistInfo> artistSource = PublishSubject.create();
+    public PublishSubject<List<CustomImg>> imgSource = PublishSubject.create();
+    public PublishSubject<Integer> venueInfoSource = PublishSubject.create();
+    public PublishSubject<List<SongkickEvent>> upcomingEventSource = PublishSubject.create();
     public static synchronized WebServices getInstance(){
         if (instance == null) {
             instance = new WebServices();
@@ -88,6 +96,120 @@ public class WebServices extends BaseObservable {
             }
         });
     }
+
+    public void getArtist(final String name) {
+        Log.d("webservice", "getArtist: ");
+        Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+        SpotifyAPI api = retrofit.create(SpotifyAPI.class);
+
+        api.getArtist(name).enqueue(new Callback<List<ArtistInfo>>() {
+            @Override
+            public void onResponse(Call<List<ArtistInfo>> call,
+                                   Response<List<ArtistInfo>> response) {
+                if(response.body() == null) artistSource.onNext(new ArtistInfo());
+                else {
+                    for (ArtistInfo artist:response.body()) {
+                        if (artist.name.equals(name)) {
+                            artistSource.onNext(artist);
+                            return;
+                        }
+                    }
+                    artistSource.onNext(new ArtistInfo());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ArtistInfo>> call, Throwable t) {
+                Log.d("webservice", "getArtist: request failed");
+                t.printStackTrace();
+            }
+        });
+    }
+    public void searchImg(String name) {
+        Log.d("webservice", "searchImg: ");
+        Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+        ImgSearchAPI api = retrofit.create(ImgSearchAPI.class);
+
+        api.searchImg(name).enqueue(new Callback<List<CustomImg>>() {
+            @Override
+            public void onResponse(Call<List<CustomImg>> call, Response<List<CustomImg>> response) {
+                if(response.body() == null) imgSource.onNext(new ArrayList<CustomImg>());
+                else imgSource.onNext(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<CustomImg>> call, Throwable t) {
+                Log.d("webservice", "searchImg: request failed");
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void searchVenueId(final String name) {
+        Log.d("webservice", "searchVenueId: ");
+        Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+        FindVenueIdAPI api = retrofit.create(FindVenueIdAPI.class);
+
+        api.searchVenueId(name).enqueue(new Callback<List<SongkickVenueInfo>>() {
+            @Override
+            public void onResponse(Call<List<SongkickVenueInfo>> call,
+                                   Response<List<SongkickVenueInfo>> response) {
+                if(response.body() != null) {
+                    for (SongkickVenueInfo venue: response.body()) {
+                        if(venue.displayName.equals(name)) {
+                            venueInfoSource.onNext(venue.id);
+                            return;
+                        }
+                    }
+                    venueInfoSource.onNext(-1);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SongkickVenueInfo>> call, Throwable t) {
+                Log.d("webservice", "searchVenueId: request failed");
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void searchUpcomingEvent(int id) {
+        Log.d("webservice", "searchUpcomingEvent: ");
+        Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+        UpcomingEventAPI api = retrofit.create(UpcomingEventAPI.class);
+
+        api.searchUpcomingEvent(id).enqueue(new Callback<List<SongkickEvent>>() {
+            @Override
+            public void onResponse(Call<List<SongkickEvent>> call,
+                                   Response<List<SongkickEvent>> response) {
+                List<SongkickEvent> list = new ArrayList<>();
+                if (response.body() != null) {
+                    for (int i = 0; i < Math.min(response.body().size(),5); i++) {
+                        list.add(response.body().get(i));
+                    }
+                }
+                upcomingEventSource.onNext(list);
+            }
+
+            @Override
+            public void onFailure(Call<List<SongkickEvent>> call, Throwable t) {
+                Log.d("webservice", "searchUpcomingEvent: request failed");
+                t.printStackTrace();
+            }
+        });
+    }
     public void postFrom(FormPostData data) {
         Log.d("webservice", "postFrom:");
         Retrofit retrofit = new Retrofit.Builder()
@@ -116,6 +238,7 @@ public class WebServices extends BaseObservable {
             }
         });
     }
+
 }
 
 interface AutoCompleteAPI {
@@ -133,4 +256,24 @@ interface EventSearchAPI {
     @POST("form/")
     Call<List<SearchEventSchema>> postForm(@Body FormPostData data);
 
+}
+interface SpotifyAPI {
+
+    @GET("spotify/{name}")
+    Call<List<ArtistInfo>> getArtist(@Path("name") String name);
+}
+interface ImgSearchAPI {
+
+    @GET("img-search/{name}")
+    Call<List<CustomImg>> searchImg(@Path("name") String name);
+}
+interface FindVenueIdAPI{
+
+    @GET("find-venue-id/{name}")
+    Call<List<SongkickVenueInfo>> searchVenueId(@Path("name") String name);
+}
+interface UpcomingEventAPI {
+
+    @GET("find-venue-upcoming-event/{id}")
+    Call<List<SongkickEvent>> searchUpcomingEvent(@Path("id") int id);
 }
