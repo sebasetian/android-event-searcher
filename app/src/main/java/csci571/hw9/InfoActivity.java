@@ -126,4 +126,12 @@ public class InfoActivity extends AppCompatActivity implements EventInfoFragment
     public void onFragmentInteraction(Uri uri) {
 
     }
+    @Override
+    public void onDestroy() {
+        ArtistFragment.destroyInstance();
+        EventInfoFragment.destroyInstance();
+        UpcomingFragment.destroyInstance();
+        VenueFragment.destroyInstance();
+        super.onDestroy();
+    }
 }

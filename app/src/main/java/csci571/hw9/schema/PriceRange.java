@@ -1,8 +1,8 @@
 package csci571.hw9.schema;
 
 public class PriceRange {
-    String type;
-    String currency;
-    double min;
-    double max;
+    public String type;
+    public String currency;
+    public double min;
+    public double max;
 }
