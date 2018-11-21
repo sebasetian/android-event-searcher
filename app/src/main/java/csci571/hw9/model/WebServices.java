@@ -9,11 +9,6 @@ import csci571.hw9.schema.LocationSchema;
 import csci571.hw9.schema.SearchEventSchema;
 import csci571.hw9.schema.SongkickEvent;
 import csci571.hw9.schema.SongkickVenueInfo;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +30,7 @@ public class WebServices extends BaseObservable {
     public PublishSubject<LocationSchema> locationSource = PublishSubject.create();
     public PublishSubject<List<SearchEventSchema>> searchEventsSource = PublishSubject.create();
     public PublishSubject<ArtistInfo> artistSource = PublishSubject.create();
-    public PublishSubject<List<CustomImg>> imgSource = PublishSubject.create();
-    public PublishSubject<Integer> venueInfoSource = PublishSubject.create();
     public PublishSubject<List<SongkickEvent>> upcomingEventSource = PublishSubject.create();
-    private CompositeDisposable mDisposable = new CompositeDisposable();
     public static synchronized WebServices getInstance(){
         if (instance == null) {
             instance = new WebServices();
@@ -156,7 +148,7 @@ public class WebServices extends BaseObservable {
         });
     }
 
-    public void searchVenueId(final String name) {
+    public void searchVenueUpcomingEvent(final String name) {
         Log.d("webservice", "searchVenueId: ");
         Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -171,11 +163,11 @@ public class WebServices extends BaseObservable {
                 if(response.body() != null) {
                     for (SongkickVenueInfo venue: response.body()) {
                         if(venue.displayName.equals(name)) {
-                            venueInfoSource.onNext(venue.id);
+                            searchUpcomingEvent(venue.id);
                             return;
                         }
                     }
-                    venueInfoSource.onNext(-1);
+                    upcomingEventSource.onNext(new ArrayList<SongkickEvent>());
                 }
             }
 
@@ -187,7 +179,7 @@ public class WebServices extends BaseObservable {
         });
     }
 
-    public void searchUpcomingEvent(int id) {
+    private void searchUpcomingEvent(int id) {
         Log.d("webservice", "searchUpcomingEvent: ");
         Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)

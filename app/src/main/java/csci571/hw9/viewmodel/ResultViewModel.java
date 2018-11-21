@@ -21,6 +21,7 @@ public class ResultViewModel extends ViewModel {
     private ResultViewAdapter mResultViewAdapter;
     private List<SearchEventSchema> mSearchEvents;
     public ObservableBoolean isLoading = new ObservableBoolean(true);
+    public ObservableBoolean isNoData = new ObservableBoolean(false);
     public PublishSubject<String> toastSource = PublishSubject.create();
     public PublishSubject<SearchEventSchema> infoSource = PublishSubject.create();
 
@@ -31,7 +32,11 @@ public class ResultViewModel extends ViewModel {
                 mSearchEvents = searchEventSchemas;
                 Log.d("ResultViewModel", "accept: ");
                 if (mResultViewAdapter != null) {
-                    mResultViewAdapter.setData(mSearchEvents);
+                    if (mSearchEvents.size() > 0) {
+                        mResultViewAdapter.setData(mSearchEvents);
+                        isNoData.set(false);
+                    }
+                    else isNoData.set(true);
                 }
                 isLoading.set(false);
             }
@@ -63,7 +68,11 @@ public class ResultViewModel extends ViewModel {
         this.mResultViewAdapter = mResultViewAdapter;
         mResultViewAdapter.setViewModel(this);
         if (mSearchEvents != null) {
-            mResultViewAdapter.setData(mSearchEvents);
+            if (mSearchEvents.size() > 0) {
+                mResultViewAdapter.setData(mSearchEvents);
+                isNoData.set(false);
+            }
+            else isNoData.set(true);
         }
 
     }

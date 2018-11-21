@@ -1,14 +1,25 @@
 package csci571.hw9.fragment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import csci571.hw9.R;
+import csci571.hw9.adapters.ArtistItemAdapter;
+import csci571.hw9.adapters.UpcomingEventAdapter;
+import csci571.hw9.databinding.UpcomingEventDataBinding;
+import csci571.hw9.schema.SongkickEvent;
+import csci571.hw9.viewmodel.InfoViewModel;
 
 public class UpcomingFragment extends Fragment {
 
@@ -33,8 +44,14 @@ public class UpcomingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_upcoming, container, false);
+        UpcomingEventDataBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_upcoming,container,false);
+        final InfoViewModel viewModel = ViewModelProviders.of(getActivity()).get(InfoViewModel.class);
+        binding.setViewModel(viewModel);
+        RecyclerView rView = binding.cards;
+        final UpcomingEventAdapter adapter = new UpcomingEventAdapter();
+        viewModel.setUpcomingAdapter(adapter);
+        rView.setAdapter(adapter);
+        return binding.getRoot();
     }
 
     public void onButtonPressed(Uri uri) {
@@ -67,5 +84,9 @@ public class UpcomingFragment extends Fragment {
 
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    public void toSongkickPage(SongkickEvent event) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(event.uri));
+        startActivity(intent);
     }
 }
