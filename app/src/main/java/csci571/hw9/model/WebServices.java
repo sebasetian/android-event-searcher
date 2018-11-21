@@ -229,7 +229,6 @@ public class WebServices extends BaseObservable {
                                    Response<List<SearchEventSchema>> response) {
                 List<SearchEventSchema> list = new ArrayList<>();
                 Log.d("webservice", "postFrom: onResponse");
-
                 if (response.body() != null) {
                     list.addAll(response.body());
                 }
@@ -239,6 +238,7 @@ public class WebServices extends BaseObservable {
             @Override
             public void onFailure(Call<List<SearchEventSchema>> call, Throwable t) {
                 Log.d("webservice", "postFrom: request failed");
+                searchEventsSource.onNext(new ArrayList<SearchEventSchema>());
                 t.printStackTrace();
             }
         });

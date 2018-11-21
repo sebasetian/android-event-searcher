@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.annotation.GlideModule;
+import csci571.hw9.GlideApp;
 import csci571.hw9.R;
 import csci571.hw9.schema.ArtistInfo;
 import csci571.hw9.schema.CustomImg;
@@ -27,10 +29,9 @@ public class ArtistPhotoAdapter extends RecyclerView.Adapter<ArtistPhotoAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ArtistPhotoViewHolder holder, int position) {
-        Log.d("ArtistPhotoAdapter", "onBindViewHolder: " + mArtist.Imgs.get(position).link);
-        Glide.with(holder.itemView)
-             .load(mArtist.Imgs.get(position).link)
-             .into((ImageView) holder.itemView.findViewById(R.id.resultImg));
+        GlideApp.with(holder.itemView)
+                .load(mArtist.Imgs.get(position).link)
+                .into((ImageView) holder.itemView.findViewById(R.id.artistImg));
     }
 
     @Override
@@ -42,7 +43,6 @@ public class ArtistPhotoAdapter extends RecyclerView.Adapter<ArtistPhotoAdapter.
     class ArtistPhotoViewHolder extends RecyclerView.ViewHolder {
         public ArtistPhotoViewHolder(View itemView) {
             super(itemView);
-            Glide.get(itemView.getContext()).clearMemory();
             Glide.get(itemView.getContext()).clearMemory();
         }
 

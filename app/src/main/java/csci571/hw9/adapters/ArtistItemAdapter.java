@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.RecycledViewPool;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import java.util.List;
 public class ArtistItemAdapter extends RecyclerView.Adapter<ArtistItemAdapter.ArtistItemViewHolder> {
     private List<ArtistInfo> mArtists = new ArrayList<>();
     private InfoViewModel mViewModel;
+    private RecyclerView.RecycledViewPool mViewPool;
     public void setData(List<ArtistInfo> list) {
         mArtists = list;
         notifyDataSetChanged();
@@ -29,6 +31,9 @@ public class ArtistItemAdapter extends RecyclerView.Adapter<ArtistItemAdapter.Ar
         mViewModel = viewModel;
         notifyDataSetChanged();
     }
+    public ArtistItemAdapter() {
+        mViewPool = new RecycledViewPool();
+    }
     @NonNull
     @Override
     public ArtistItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -36,6 +41,7 @@ public class ArtistItemAdapter extends RecyclerView.Adapter<ArtistItemAdapter.Ar
                                                                 R.layout.recycler_artist_item,parent,false);
 
         ArtistItemViewHolder holder = new ArtistItemViewHolder(binding.getRoot());
+        ((RecyclerView)binding.getRoot().findViewById(R.id.imgView)).setRecycledViewPool(mViewPool);
         holder.setBinding(binding);
         return holder;
     }

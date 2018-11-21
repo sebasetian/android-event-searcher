@@ -9,7 +9,7 @@
   </data>
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
     <TextView
       android:id="@+id/textView"
       android:layout_width="122dp"
@@ -42,13 +42,16 @@
       app:layout_constraintVertical_bias="0.505"/>
     <android.support.v7.widget.RecyclerView
       android:id="@+id/artistListView"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
       android:name="csci571.hw9.Fragment.ArtistFragment"
       android:visibility="@{viewModel.isLoading?View.GONE:View.VISIBLE}"
       app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
       tools:context=".fragment.ArtistFragment"
       tools:listitem="@layout/recycler_artist_item"/>
   </android.support.constraint.ConstraintLayout>

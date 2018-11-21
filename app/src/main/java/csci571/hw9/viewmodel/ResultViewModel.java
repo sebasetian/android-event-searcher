@@ -29,6 +29,7 @@ public class ResultViewModel extends ViewModel {
             @Override
             public void accept(List<SearchEventSchema> searchEventSchemas) throws Exception {
                 mSearchEvents = searchEventSchemas;
+                Log.d("ResultViewModel", "accept: ");
                 if (mResultViewAdapter != null) {
                     mResultViewAdapter.setData(mSearchEvents);
                 }

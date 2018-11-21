@@ -105,6 +105,7 @@ public class FormFragment extends Fragment {
                     new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
+
                             mViewModel.currLocationSource.onNext(location);
                             navigateToResult();
                         }});
