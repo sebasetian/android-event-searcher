@@ -2,11 +2,11 @@ package csci571.hw9.schema;
 
 public class Venues extends SearchEventSchema {
     String postalCode;
-    City city;
-    State state;
-    Country country;
-    Address address;
-    Location location;
-    GeneralInfo generalInfo;
-    BoxOfficeInfo boxOfficeInfo;
+    public City city;
+    public State state;
+    public Country country;
+    public Address address;
+    public Location location;
+    public GeneralInfo generalInfo;
+    public BoxOfficeInfo boxOfficeInfo;
 }

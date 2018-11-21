@@ -1,6 +1,6 @@
 package csci571.hw9.schema;
 
 public class Address {
-    String line1;
-    String line2;
+    public String line1 = "";
+    public String line2;
 }

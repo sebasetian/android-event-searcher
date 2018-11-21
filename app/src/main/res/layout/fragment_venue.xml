@@ -2,68 +2,242 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
+  <data class="VenueDataBinding">
+    <import type="android.view.View" />
+    <variable name="venue" type="csci571.hw9.schema.Venues"/>
+    <variable
+      name="fragment"
+      type="csci571.hw9.fragment.VenueFragment"/>
+  </data>
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="400dp"
     tools:context=".fragment.VenueFragment">
+    <android.support.constraint.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:visibility="@{fragment.isNoData?View.GONE:View.VISIBLE}">
+      <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barrier7"/>
+      <TextView
+        android:id="@+id/venueInfoName"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="Name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+      <TextView
+        android:id="@+id/venueInfoAddress"
+        android:textStyle="bold"
+        android:layout_width="55dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="8dp"
+        android:text="Address"
+        android:visibility="@{venue.address.line1.length() == 0? View.GONE: View.VISIBLE}"
+        app:layout_constraintStart_toStartOf="@+id/venueInfoName"
+        app:layout_constraintTop_toTopOf="@+id/barrier"/>
+      <TextView
+        android:id="@+id/venueInfoCity"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="City"
+        android:visibility="@{venue.city.name.length() == 0? View.GONE: View.VISIBLE}"
+        app:layout_constraintStart_toStartOf="@+id/venueInfoName"
+        app:layout_constraintTop_toTopOf="@+id/barrier2"/>
+      <TextView
+        android:id="@+id/venueInfoPhone"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Phone Number"
+        android:visibility="@{venue.boxOfficeInfo.phoneNumberDetail.length() == 0? View.GONE: View.VISIBLE}"
+        app:layout_constraintStart_toStartOf="@+id/venueInfoName"
+        app:layout_constraintTop_toTopOf="@+id/barrier3"/>
+      <TextView
+        android:id="@+id/venueInfoOpenHour"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Open Hours"
+        android:visibility="@{venue.boxOfficeInfo.openHoursDetail.length() == 0? View.GONE: View.VISIBLE}"
+        app:layout_constraintStart_toStartOf="@+id/venueInfoName"
+        app:layout_constraintTop_toTopOf="@+id/barrier4"/>
+      <TextView
+        android:id="@+id/venueInfoRule"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="General Rule"
+        android:visibility="@{venue.generalInfo.generalRule.length() == 0? View.GONE: View.VISIBLE}"
+        app:layout_constraintStart_toStartOf="@+id/venueInfoName"
+        app:layout_constraintTop_toTopOf="@+id/barrier5"/>
+      <TextView
+        android:id="@+id/venueInfoChild"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Child Rule"
+        android:visibility="@{venue.generalInfo.childRule.length() == 0? View.GONE: View.VISIBLE}"
+        app:layout_constraintStart_toStartOf="@+id/venueInfoName"
+        app:layout_constraintTop_toTopOf="@+id/barrier6"/>
+      <TextView
+        android:id="@+id/venueInfoNameText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginLeft="75dp"
+        android:text="@{venue.name}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/venueInfoName"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.google.android.gms.maps.MapView
-      android:id="@+id/mapView"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:layout_marginTop="32dp"
+      <TextView
+        android:id="@+id/venueInfoAddressText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@{venue.address.line1}"
+        android:visibility="@{venue.address.line1.length() == 0? View.GONE: View.VISIBLE}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/venueInfoNameText"
+        app:layout_constraintTop_toTopOf="@+id/venueInfoAddress"/>
+      <TextView
+        android:id="@+id/venueInfoCityText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@{venue.city.name + `, ` + venue.state.name}"
+        android:visibility="@{venue.city.name.length() == 0? View.GONE: View.VISIBLE}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/venueInfoNameText"
+        app:layout_constraintTop_toTopOf="@+id/venueInfoCity"/>
+      <TextView
+        android:id="@+id/venueInfoPhoneText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{venue.boxOfficeInfo.phoneNumberDetail}"
+        android:visibility="@{venue.boxOfficeInfo.phoneNumberDetail.length() == 0? View.GONE: View.VISIBLE}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/venueInfoNameText"
+        app:layout_constraintTop_toTopOf="@+id/venueInfoPhone"/>
+      <TextView
+        android:id="@+id/venueInfoOpenHourText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@{venue.boxOfficeInfo.openHoursDetail}"
+        android:visibility="@{venue.boxOfficeInfo.openHoursDetail.length() == 0? View.GONE: View.VISIBLE}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/venueInfoNameText"
+        app:layout_constraintTop_toTopOf="@+id/venueInfoOpenHour"/>
+      <TextView
+        android:id="@+id/venueInfoRuleText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@{venue.generalInfo.generalRule}"
+        android:visibility="@{venue.generalInfo.generalRule.length() == 0? View.GONE: View.VISIBLE}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/venueInfoNameText"
+        app:layout_constraintTop_toTopOf="@+id/venueInfoRule"/>
+      <TextView
+        android:id="@+id/venueInfoChildText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@{venue.generalInfo.childRule}"
+        android:visibility="@{venue.generalInfo.childRule.length() == 0? View.GONE: View.VISIBLE}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/venueInfoNameText"
+        app:layout_constraintTop_toTopOf="@+id/venueInfoChild"/>
+      <android.support.constraint.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierAllowsGoneWidgets="false"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="venueInfoNameText"/>
+      <android.support.constraint.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierAllowsGoneWidgets="false"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="venueInfoNameText,venueInfoAddressText"/>
+      <android.support.constraint.Barrier
+        android:id="@+id/barrier3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierAllowsGoneWidgets="false"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="venueInfoNameText,venueInfoAddressText,venueInfoCityText"/>
+      <android.support.constraint.Barrier
+        android:id="@+id/barrier4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierAllowsGoneWidgets="false"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="venueInfoNameText,venueInfoAddressText,venueInfoCityText,venueInfoPhoneText"/>
+      <android.support.constraint.Barrier
+        android:id="@+id/barrier5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierAllowsGoneWidgets="false"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="venueInfoNameText,venueInfoAddressText,venueInfoCityText,venueInfoPhoneText,venueInfoOpenHourText"/>
+      <android.support.constraint.Barrier
+        android:id="@+id/barrier6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierAllowsGoneWidgets="false"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="venueInfoNameText,venueInfoAddressText,venueInfoCityText,venueInfoPhoneText,venueInfoOpenHourText,venueInfoRuleText"/>
+      <android.support.constraint.Barrier
+        android:id="@+id/barrier7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierAllowsGoneWidgets="false"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="venueInfoNameText,venueInfoAddressText,venueInfoCityText,venueInfoPhoneText,venueInfoOpenHourText,venueInfoRuleText,venueInfoChildText"/>
+    </android.support.constraint.ConstraintLayout>
+    <TextView
+      android:id="@+id/noDataText"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginLeft="8dp"
+      android:layout_marginRight="8dp"
+      android:text="No Record"
+      android:visibility="@{fragment.isNoData?View.VISIBLE:View.GONE}"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/textView7"/>
-    <TextView
-      android:id="@+id/textView2"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="TextView"
-      tools:layout_editor_absoluteX="28dp"
-      tools:layout_editor_absoluteY="16dp"/>
-    <TextView
-      android:id="@+id/textView3"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="TextView"
-      tools:layout_editor_absoluteX="28dp"
-      tools:layout_editor_absoluteY="52dp"/>
-    <TextView
-      android:id="@+id/textView4"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="TextView"
-      tools:layout_editor_absoluteX="28dp"
-      tools:layout_editor_absoluteY="93dp"/>
-    <TextView
-      android:id="@+id/textView5"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="TextView"
-      tools:layout_editor_absoluteX="27dp"
-      tools:layout_editor_absoluteY="129dp"/>
-    <TextView
-      android:id="@+id/textView6"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="TextView"
-      tools:layout_editor_absoluteX="28dp"
-      tools:layout_editor_absoluteY="167dp"/>
-    <TextView
-      android:id="@+id/textView7"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="TextView"
-      tools:layout_editor_absoluteX="28dp"
-      tools:layout_editor_absoluteY="201dp"/>
-    <TextView
-      android:id="@+id/textView8"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="TextView"
-      tools:layout_editor_absoluteX="28dp"
-      tools:layout_editor_absoluteY="232dp"/>
+      app:layout_constraintTop_toTopOf="parent"/>
   </android.support.constraint.ConstraintLayout>
+  </ScrollView>
 </layout>
