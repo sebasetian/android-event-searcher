@@ -17,6 +17,7 @@ import csci571.hw9.model.PrefHelper;
 import csci571.hw9.schema.SearchEventSchema;
 import csci571.hw9.viewmodel.ResultViewModel;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
     private ResultViewModel mViewModel;
     private CompositeDisposable mDisposable = new CompositeDisposable();
     public void setData(List<SearchEventSchema> list) {
+
         mEvents = list;
         notifyDataSetChanged();
     }
@@ -35,6 +37,7 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
     @NonNull
     @Override
     public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         ResultItemDataBinding binding = DataBindingUtil
             .inflate(LayoutInflater.from(parent.getContext()), R.layout.recycler_view_item, parent, false);
         FavoriteViewHolder holder = new FavoriteViewHolder(binding.getRoot());
@@ -76,17 +79,29 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
             setTypeImg(event);
             setText(event);
             setPref();
-            mView.findViewById(R.id.favBtn).setOnClickListener(new OnClickListener() {
+            mView.findViewById(R.id.resultItem).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mViewModel.makeToast(mEvent.name + " was removed from favorites");
-                    PrefHelper.getInstance().switchPref(mEvent.id,mEvent);
+                    mViewModel.goToInfo(mEvent);
                 }
             });
         }
         void setPref() {
             ((ImageView) mView
                 .findViewById(R.id.favBtn)).setImageResource(R.drawable.heart_fill_red);
+            mDisposable.add(
+                PrefHelper.getInstance().prefChangeSource.subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        if (s.equals(mEvent.id)) {
+                            if (PrefHelper.getInstance().contains(mEvent.id)) {
+                                mViewModel.makeToast(mEvent.name + " was added to favorites");
+                            } else {
+                                mViewModel.makeToast(mEvent.name + " was removed from favorites");
+                            }
+                        }
+                    }
+                }));
         }
         void bindViewModel(final ResultViewModel viewModel) {
             mViewModel = viewModel;
@@ -114,13 +129,6 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
                         .findViewById(R.id.resultImg)).setImageResource(R.drawable.miscellaneous_icon);
                     break;
             }
-            mView
-                .findViewById(R.id.resultImg).setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mViewModel.goToInfo(mEvent);
-                }
-            });
         }
         void setText(SearchEventSchema event) {
             ((TextView) mView.findViewById(R.id.resultTitle)).setText(event.name);
@@ -133,13 +141,7 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
                 Date +=" " + event.dates.start.localTime;
             }
             ((TextView) mView.findViewById(R.id.resultDate)).setText(Date);
-            mView.findViewById(R.id.resultItems).setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("FavoriteItemAdapter", "onClick: " + mEvent.name);
-                    mViewModel.goToInfo(mEvent);
-                }
-            });
+
         }
     }
 }

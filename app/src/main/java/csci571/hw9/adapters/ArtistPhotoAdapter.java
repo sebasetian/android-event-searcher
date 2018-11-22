@@ -1,6 +1,7 @@
 package csci571.hw9.adapters;
 
 import android.support.annotation.NonNull;
+import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.InflateException;
@@ -24,13 +25,19 @@ public class ArtistPhotoAdapter extends RecyclerView.Adapter<ArtistPhotoAdapter.
     @NonNull
     @Override
     public ArtistPhotoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         return new ArtistPhotoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_photo_item,parent,false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ArtistPhotoViewHolder holder, int position) {
+        CircularProgressDrawable progressBar = new CircularProgressDrawable(holder.itemView.getContext());
+        progressBar.setStrokeWidth(5f);
+        progressBar.setCenterRadius(30f);
+        progressBar.start();
         GlideApp.with(holder.itemView)
                 .load(mArtist.Imgs.get(position).link)
+                .placeholder(progressBar)
                 .into((ImageView) holder.itemView.findViewById(R.id.artistImg));
     }
 

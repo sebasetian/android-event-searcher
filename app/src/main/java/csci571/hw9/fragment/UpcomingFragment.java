@@ -63,7 +63,6 @@ public class UpcomingFragment extends Fragment {
         mViewModel.sortOptionIdx.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer integer) {
-                Log.d("sortOptionIdx", "onChanged: " + mViewModel.sortOptionIdx.getValue());
                 onSelected();
             }
         });
@@ -84,7 +83,6 @@ public class UpcomingFragment extends Fragment {
 
     public void onSelected() {
         if (mViewModel.sortOptionIdx.getValue() != null) {
-            Log.d("", "onSelected: " + mViewModel.sortOptionIdx.getValue());
             if (mViewModel.sortOptionIdx.getValue() == 0) {
                 this.getView().findViewById(R.id.sortDirSpinner).setEnabled(false);
             } else {

@@ -18,16 +18,16 @@ public class PrefHelper {
     private static final String NAME = "fav";
     private Gson gson = new Gson();
     public PublishSubject<String> prefChangeSource = PublishSubject.create();
-    public ObservableBoolean isEmpty = new ObservableBoolean(true);
+    public ObservableBoolean isEmpty;
     private OnSharedPreferenceChangeListener listener = new OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            prefChangeSource.onNext(key);
-            Log.d("onSharedPreference", "onSharedPreferenceChanged: " + mPref.getAll().isEmpty());
             isEmpty.set(mPref.getAll().isEmpty());
+            prefChangeSource.onNext(key);
         }
     };
     PrefHelper(SharedPreferences pref) {
+        isEmpty = new ObservableBoolean();
         mPref = pref;
         mPref.registerOnSharedPreferenceChangeListener(listener);
         isEmpty.set(mPref.getAll().isEmpty());

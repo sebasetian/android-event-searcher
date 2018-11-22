@@ -1,5 +1,8 @@
 package csci571.hw9.fragment;
 
+import static android.support.v7.widget.DividerItemDecoration.HORIZONTAL;
+import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
+
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -7,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,14 +44,17 @@ public class FavoriteFragment extends Fragment {
         FavoriteDataBinding binding = DataBindingUtil.inflate(inflater,R.layout.favorite_fragment,container,false);
         binding.setPrefHelper(PrefHelper.getInstance());
         final FavoriteItemAdapter adapter = new FavoriteItemAdapter();
+        Log.d("FavoriteFragment", "onCreateView: "+ PrefHelper.getInstance().getAll().size());
         adapter.setData(PrefHelper.getInstance().getAll());
         adapter.setViewModel(mViewModel);
         binding.favList.setAdapter(adapter);
         binding.favList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.favList.addItemDecoration(new DividerItemDecoration(getActivity(),VERTICAL));
         mDisposable.add(
         PrefHelper.getInstance().prefChangeSource.subscribe(new Consumer<String>() {
             @Override
             public void accept(String s) throws Exception {
+                Log.d("FavoriteFragment", "accept: "+PrefHelper.getInstance().isEmpty.get());
                 if (!PrefHelper.getInstance().isEmpty.get()) {
                     adapter.setData(PrefHelper.getInstance().getAll());
                 }

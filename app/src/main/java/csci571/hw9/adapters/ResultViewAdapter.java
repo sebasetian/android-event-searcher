@@ -142,13 +142,6 @@ public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.Re
                         .findViewById(R.id.resultImg)).setImageResource(R.drawable.miscellaneous_icon);
                     break;
             }
-            mView
-                .findViewById(R.id.resultImg).setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mViewModel.goToInfo(mEvent);
-                }
-            });
         }
         void setText(SearchEventSchema event) {
             ((TextView) mView.findViewById(R.id.resultTitle)).setText(event.name);
@@ -161,7 +154,7 @@ public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.Re
                 Date +=" " + event.dates.start.localTime;
             }
             ((TextView) mView.findViewById(R.id.resultDate)).setText(Date);
-            mView.findViewById(R.id.resultItems).setOnClickListener(new OnClickListener() {
+            mView.findViewById(R.id.resultItem).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mViewModel.goToInfo(mEvent);

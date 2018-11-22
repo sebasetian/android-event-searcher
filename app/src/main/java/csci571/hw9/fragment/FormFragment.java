@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,8 +61,21 @@ public class FormFragment extends Fragment {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("Form Fragment", "onClick: ");
-                    getLocation();
+                    if (mViewModel.form.isFromHere.get()) {
+                        mViewModel.isLocationEmpty.set(false);
+                    }
+                    if (mViewModel.form.keyword.get() == null || mViewModel.form.keyword.get().length() == 0 ||
+                        (!mViewModel.form.isFromHere.get() &&(mViewModel.form.location.get() == null || mViewModel.form.location.get().length() == 0))) {
+                        if (mViewModel.form.keyword.get() == null || mViewModel.form.keyword.get().length() == 0) {
+                            mViewModel.isKeywordEmpty.set(true);
+                        }
+                        if (!mViewModel.form.isFromHere.get() && (mViewModel.form.location.get() == null || mViewModel.form.location.get().length() == 0)) {
+                            mViewModel.isLocationEmpty.set(true);
+                        }
+                        Toast.makeText(getActivity(),"Please fix all fields with errors",Toast.LENGTH_SHORT).show();
+                    } else {
+                        getLocation();
+                    }
                 }
             });
         return formBinding.getRoot();

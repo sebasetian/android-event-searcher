@@ -23,11 +23,30 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0.016"/>
+    <TextView
+      android:id="@+id/keywordErrorText"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="3dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginLeft="16dp"
+      android:text="Please enter mandatory field"
+      android:visibility="@{viewModel.isKeywordEmpty? View.VISIBLE:View.GONE}"
+      android:textColor="@color/colorAccent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/keywordTitle"/>
+    <android.support.constraint.Barrier
+      android:id="@+id/barrier"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:barrierAllowsGoneWidgets="false"
+      app:barrierDirection="bottom"
+      app:constraint_referenced_ids="keywordErrorText,keywordTitle"/>
     <AutoCompleteTextView
       android:id="@+id/keyword_text"
       android:layout_width="360dp"
       android:layout_height="45dp"
-      android:layout_marginTop="21dp"
+      android:layout_marginTop="8dp"
       android:layout_marginStart="24dp"
       android:layout_marginEnd="27dp"
       android:layout_marginLeft="24dp"
@@ -36,9 +55,9 @@
       android:hint="@string/keyword_placeholder"
       android:text="@={viewModel.form.keyword}"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/keywordTitle"
-      />
+      app:layout_constraintTop_toBottomOf="@id/barrier"/>
     <TextView
       android:id="@+id/category_title"
       android:layout_width="63dp"
@@ -87,10 +106,10 @@
       android:layout_marginStart="8dp"
       android:layout_marginLeft="8dp"
       android:autofillHints=""
-      android:text="@={DistanceConverter.IntToString(viewModel.form.distance)}"
       android:ems="10"
       android:hint="10"
       android:inputType="number"
+      android:text="@={DistanceConverter.IntToString(viewModel.form.distance)}"
       app:layout_constraintBottom_toTopOf="@+id/unitSpinner"
       app:layout_constraintEnd_toEndOf="@+id/categorySpinner"
       app:layout_constraintHorizontal_bias="0.0"
@@ -125,9 +144,11 @@
       android:id="@+id/fromWhereGroup"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
       android:layout_marginStart="16dp"
       android:layout_marginLeft="16dp"
       app:layout_constraintEnd_toEndOf="@+id/unitSpinner"
+      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/from_title">
       <RadioButton
@@ -151,6 +172,24 @@
         tools:layout_editor_absoluteX="26dp"
         tools:layout_editor_absoluteY="400dp"/>
     </RadioGroup>
+    <TextView
+      android:id="@+id/keywordErrorText2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="12dp"
+      android:layout_marginLeft="12dp"
+      android:text="Please enter mandatory field"
+      android:visibility="@{viewModel.isLocationEmpty? View.VISIBLE:View.GONE}"
+      android:textColor="@color/colorAccent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/fromWhereGroup"/>
+    <android.support.constraint.Barrier
+      android:id="@+id/barrier2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:barrierAllowsGoneWidgets="false"
+      app:barrierDirection="bottom"
+      app:constraint_referenced_ids="keywordErrorText2,fromWhereGroup"/>
     <android.support.design.widget.TextInputLayout
       android:id="@+id/location_text"
       android:layout_width="0dp"
@@ -160,14 +199,14 @@
       app:hintEnabled="false"
       app:layout_constraintEnd_toEndOf="@+id/distanceNum"
       app:layout_constraintStart_toStartOf="@+id/fromWhereGroup"
-      app:layout_constraintTop_toBottomOf="@+id/fromWhereGroup">
-
+      app:layout_constraintTop_toBottomOf="@id/barrier2"
+      tools:layout_editor_absoluteY="401dp">
       <android.support.design.widget.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@={viewModel.form.location}"
         android:enabled="@{!viewModel.form.isFromHere}"
-        android:hint="Type in the location"/>
+        android:hint="Type in the location"
+        android:text="@={viewModel.form.location}"/>
     </android.support.design.widget.TextInputLayout>
     <Button
       android:id="@+id/submitBtn"
@@ -189,6 +228,7 @@
       android:layout_marginEnd="28dp"
       android:layout_marginLeft="8dp"
       android:layout_marginRight="28dp"
+      android:onClick="@{()->viewModel.clear()}"
       android:text="CLEAR"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@+id/submitBtn"

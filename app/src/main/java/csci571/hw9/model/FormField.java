@@ -18,15 +18,5 @@ public class FormField extends BaseObservable {
     public final ObservableField<Integer> keywordError = new ObservableField<>();
     public final ObservableField<Integer> locationError = new ObservableField<>();
 
-    @Bindable
-    public boolean isValid() {
-        return isKeywordValid() && isLocationValid();
-    }
-    public boolean isKeywordValid() {
-        return true;
-    }
-    public boolean isLocationValid() {
-        return true;
-    }
 
 }
