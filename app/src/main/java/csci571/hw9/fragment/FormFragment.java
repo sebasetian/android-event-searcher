@@ -31,11 +31,13 @@ import csci571.hw9.databinding.FormDataBinding;
 
 public class FormFragment extends Fragment {
 
+    private static FormFragment mFragment;
     private FormViewModel mViewModel;
     public FormDataBinding formBinding;
 
-    public static FormFragment newInstance() {
-        return new FormFragment();
+    public static FormFragment getInstance() {
+        if (mFragment == null) mFragment = new FormFragment();
+        return mFragment;
     }
 
     private FusedLocationProviderClient mFusedLocationClient;
@@ -126,4 +128,7 @@ public class FormFragment extends Fragment {
         startActivity(intent);
     }
 
+    public static void destroyInstance() {
+        mFragment = null;
+    }
 }

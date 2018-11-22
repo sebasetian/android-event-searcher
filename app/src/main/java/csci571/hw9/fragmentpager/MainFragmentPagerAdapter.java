@@ -19,9 +19,9 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new FormFragment();
+            return FormFragment.getInstance();
         } else {
-            return new FavoriteFragment();
+            return FavoriteFragment.getInstance();
         }
     }
     @Override

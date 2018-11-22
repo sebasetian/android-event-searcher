@@ -49,14 +49,6 @@ public class ResultViewModel extends ViewModel {
         mDisposable.dispose();
     }
 
-    public void switchFav(SearchEventSchema event) {
-        PrefHelper helper = PrefHelper.getInstance();
-        if (helper.contains(event.id)) {
-            helper.delete(event.id);
-        } else {
-            helper.put(event.id,event);
-        }
-    }
     public void makeToast(String text) {
         toastSource.onNext(text);
     }

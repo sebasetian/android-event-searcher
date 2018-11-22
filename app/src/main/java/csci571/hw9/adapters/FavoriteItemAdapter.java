@@ -3,6 +3,7 @@ package csci571.hw9.adapters;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +14,13 @@ import android.widget.TextView;
 import csci571.hw9.R;
 import csci571.hw9.databinding.ResultItemDataBinding;
 import csci571.hw9.model.PrefHelper;
-import csci571.hw9.schema.*;
+import csci571.hw9.schema.SearchEventSchema;
 import csci571.hw9.viewmodel.ResultViewModel;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.ResultViewHolder> {
+public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapter.FavoriteViewHolder> {
     private List<SearchEventSchema> mEvents = new ArrayList<>();
     private ResultViewModel mViewModel;
     private CompositeDisposable mDisposable = new CompositeDisposable();
@@ -34,15 +34,16 @@ public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.Re
     }
     @NonNull
     @Override
-    public ResultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ResultItemDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.recycler_view_item,parent,false);
-        ResultViewHolder holder = new ResultViewHolder(binding.getRoot());
+    public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ResultItemDataBinding binding = DataBindingUtil
+            .inflate(LayoutInflater.from(parent.getContext()), R.layout.recycler_view_item, parent, false);
+        FavoriteViewHolder holder = new FavoriteViewHolder(binding.getRoot());
         holder.setBinding(binding);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ResultViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
         holder.bindEvent(mEvents.get(position));
         holder.bindViewModel(mViewModel);
     }
@@ -54,15 +55,15 @@ public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.Re
 
     @Override
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-
+        mDisposable.dispose();
     }
-
-    class ResultViewHolder extends RecyclerView.ViewHolder {
+    class FavoriteViewHolder extends ViewHolder {
         View mView;
         SearchEventSchema mEvent;
         ResultItemDataBinding mBinding;
         ResultViewModel mViewModel;
-        ResultViewHolder(View itemView) {
+
+        public FavoriteViewHolder(View itemView) {
             super(itemView);
         }
         void setBinding(ResultItemDataBinding binding) {
@@ -75,49 +76,20 @@ public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.Re
             setTypeImg(event);
             setText(event);
             setPref();
+            mView.findViewById(R.id.favBtn).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mViewModel.makeToast(mEvent.name + " was removed from favorites");
+                    PrefHelper.getInstance().switchPref(mEvent.id,mEvent);
+                }
+            });
         }
         void setPref() {
-            final String id = mEvent.id;
-            final PrefHelper helper = PrefHelper.getInstance();
-            if (helper.contains(id)) {
-                ((ImageView) mView
-                    .findViewById(R.id.favBtn)).setImageResource(R.drawable.heart_fill_red);
-            } else {
-                ((ImageView) mView
-                    .findViewById(R.id.favBtn)).setImageResource(R.drawable.heart_outline_black);
-            }
-            mDisposable.add(
-                helper.prefChangeSource.subscribe(new Consumer<String>() {
-                @Override
-                public void accept(String s) throws Exception {
-                    Log.d("prefChangeSource", "accept: ");
-                    if (s.equals(id)) {
-                        if (helper.contains(id)) {
-                            mViewModel.makeToast(mEvent.name + " was added to favorites");
-                            ((ImageView) mView
-                                .findViewById(R.id.favBtn))
-                                .setImageResource(R.drawable.heart_fill_red);
-                        } else {
-                            mViewModel.makeToast(mEvent.name + " was removed from favorites");
-                            ((ImageView) mView
-                                .findViewById(R.id.favBtn))
-                                .setImageResource(R.drawable.heart_outline_black);
-                        }
-                    }
-                }
-            }));
-
-
+            ((ImageView) mView
+                .findViewById(R.id.favBtn)).setImageResource(R.drawable.heart_fill_red);
         }
         void bindViewModel(final ResultViewModel viewModel) {
             mViewModel = viewModel;
-            ((ImageView) mView.findViewById(R.id.favBtn)).setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PrefHelper helper = PrefHelper.getInstance();
-                    helper.switchPref(mEvent.id,mEvent);
-                }
-            });
         }
         void setTypeImg(SearchEventSchema event) {
             switch (event.classifications[0].segment.name) {
@@ -164,6 +136,7 @@ public class ResultViewAdapter extends RecyclerView.Adapter<ResultViewAdapter.Re
             mView.findViewById(R.id.resultItems).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d("FavoriteItemAdapter", "onClick: " + mEvent.name);
                     mViewModel.goToInfo(mEvent);
                 }
             });

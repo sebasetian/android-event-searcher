@@ -26,7 +26,7 @@ public class EventInfoFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static EventInfoFragment newInstance() {
+    public static EventInfoFragment getInstance() {
         if (mFragment == null) mFragment = new EventInfoFragment();
         return mFragment;
     }

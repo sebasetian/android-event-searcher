@@ -20,7 +20,7 @@ public class InfoFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return EventInfoFragment.newInstance();
+            return EventInfoFragment.getInstance();
         } else if (position == 1) {
             return ArtistFragment.newInstance();
         } else if (position == 2) {

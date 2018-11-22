@@ -26,9 +26,6 @@ import io.reactivex.functions.Consumer;
 
 public class ResultFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private OnListFragmentInteractionListener mListener;
     private ResultViewModel mViewModel;
     public ResultDataBinding resultDataBinding;
@@ -70,7 +67,7 @@ public class ResultFragment extends Fragment {
                 }
             }));
         resultDataBinding.setViewModel(mViewModel);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        RecyclerView recyclerView = resultDataBinding.list;
         ResultViewAdapter adapter = new ResultViewAdapter();
         mViewModel.setResultViewAdapter(adapter);
         recyclerView.setAdapter(adapter);
@@ -103,7 +100,7 @@ public class ResultFragment extends Fragment {
     @Override
     public void onDestroy() {
         mDisposable.dispose();
-        RecyclerView recyclerView = (RecyclerView) resultDataBinding.getRoot().findViewById(R.id.list);
+        RecyclerView recyclerView = resultDataBinding.list;
         recyclerView.setAdapter(null);
         Log.d("ResultFragment", "onDestroy: ");
         super.onDestroy();

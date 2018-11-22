@@ -3,6 +3,8 @@ package csci571.hw9.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.databinding.ObservableBoolean;
+import android.util.Log;
 import com.google.gson.Gson;
 import csci571.hw9.schema.SearchEventSchema;
 import io.reactivex.subjects.PublishSubject;
@@ -16,15 +18,19 @@ public class PrefHelper {
     private static final String NAME = "fav";
     private Gson gson = new Gson();
     public PublishSubject<String> prefChangeSource = PublishSubject.create();
+    public ObservableBoolean isEmpty = new ObservableBoolean(true);
     private OnSharedPreferenceChangeListener listener = new OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             prefChangeSource.onNext(key);
+            Log.d("onSharedPreference", "onSharedPreferenceChanged: " + mPref.getAll().isEmpty());
+            isEmpty.set(mPref.getAll().isEmpty());
         }
     };
     PrefHelper(SharedPreferences pref) {
         mPref = pref;
         mPref.registerOnSharedPreferenceChangeListener(listener);
+        isEmpty.set(mPref.getAll().isEmpty());
     }
     public static void initInstance(Context context) {
         if (prefHelper == null) {

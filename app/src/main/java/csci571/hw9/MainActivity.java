@@ -6,6 +6,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import csci571.hw9.fragment.FavoriteFragment;
+import csci571.hw9.fragment.FormFragment;
 import csci571.hw9.fragmentpager.MainFragmentPagerAdapter;
 import csci571.hw9.model.PrefHelper;
 
@@ -22,5 +24,11 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         TabLayout tabs = findViewById(R.id.tabLayout);
         tabs.setupWithViewPager(viewPager);
+    }
+    @Override
+    public void onDestroy() {
+        FormFragment.destroyInstance();
+        FavoriteFragment.destroyInstance();
+        super.onDestroy();
     }
 }
