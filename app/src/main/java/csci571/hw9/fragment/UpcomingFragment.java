@@ -1,13 +1,17 @@
 package csci571.hw9.fragment;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +29,9 @@ public class UpcomingFragment extends Fragment {
 
     private static UpcomingFragment mFragment;
     private OnFragmentInteractionListener mListener;
-
+    private InfoViewModel mViewModel;
     public UpcomingFragment() {
-        // Required empty public constructor
+
     }
 
     public static UpcomingFragment newInstance() {
@@ -44,13 +48,31 @@ public class UpcomingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        UpcomingEventDataBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_upcoming,container,false);
-        final InfoViewModel viewModel = ViewModelProviders.of(getActivity()).get(InfoViewModel.class);
-        binding.setViewModel(viewModel);
+        UpcomingEventDataBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_upcoming, container, false);
+        mViewModel = ViewModelProviders.of(getActivity()).get(InfoViewModel.class);
+        binding.setViewModel(mViewModel);
         RecyclerView rView = binding.cards;
-        final UpcomingEventAdapter adapter = new UpcomingEventAdapter();
-        viewModel.setUpcomingAdapter(adapter);
+        UpcomingEventAdapter adapter = new UpcomingEventAdapter();
+        mViewModel.setUpcomingAdapter(adapter);
         rView.setAdapter(adapter);
+        rView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.sortDirSpinner.setEnabled(false);
+        binding.setFragment(this);
+        mViewModel.sortOptionIdx.setValue(0);
+        mViewModel.sortDirIdx.setValue(0);
+        mViewModel.sortOptionIdx.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                Log.d("sortOptionIdx", "onChanged: " + mViewModel.sortOptionIdx.getValue());
+                onSelected();
+            }
+        });
+        mViewModel.sortDirIdx.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                onSelected();
+            }
+        });
         return binding.getRoot();
     }
 
@@ -60,6 +82,17 @@ public class UpcomingFragment extends Fragment {
         }
     }
 
+    public void onSelected() {
+        if (mViewModel.sortOptionIdx.getValue() != null) {
+            Log.d("", "onSelected: " + mViewModel.sortOptionIdx.getValue());
+            if (mViewModel.sortOptionIdx.getValue() == 0) {
+                this.getView().findViewById(R.id.sortDirSpinner).setEnabled(false);
+            } else {
+                this.getView().findViewById(R.id.sortDirSpinner).setEnabled(true);
+            }
+            mViewModel.sortList();
+        }
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

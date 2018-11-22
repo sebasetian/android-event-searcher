@@ -161,8 +161,9 @@ public class WebServices extends BaseObservable {
             public void onResponse(Call<List<SongkickVenueInfo>> call,
                                    Response<List<SongkickVenueInfo>> response) {
                 if(response.body() != null) {
+                    Log.d("webservice", "searchVenueId onResponse: ");
                     for (SongkickVenueInfo venue: response.body()) {
-                        if(venue.displayName.equals(name)) {
+                        if(venue.displayName.equalsIgnoreCase(name)) {
                             searchUpcomingEvent(venue.id);
                             return;
                         }
@@ -175,6 +176,7 @@ public class WebServices extends BaseObservable {
             public void onFailure(Call<List<SongkickVenueInfo>> call, Throwable t) {
                 Log.d("webservice", "searchVenueId: request failed");
                 t.printStackTrace();
+                upcomingEventSource.onNext(new ArrayList<SongkickEvent>());
             }
         });
     }
@@ -204,6 +206,7 @@ public class WebServices extends BaseObservable {
             public void onFailure(Call<List<SongkickEvent>> call, Throwable t) {
                 Log.d("webservice", "searchUpcomingEvent: request failed");
                 t.printStackTrace();
+                upcomingEventSource.onNext(new ArrayList<SongkickEvent>());
             }
         });
     }

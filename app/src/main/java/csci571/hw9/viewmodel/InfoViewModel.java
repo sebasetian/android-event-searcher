@@ -1,8 +1,8 @@
 package csci571.hw9.viewmodel;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableBoolean;
-import android.databinding.ObservableInt;
 import android.util.Log;
 import csci571.hw9.adapters.ArtistItemAdapter;
 
@@ -11,6 +11,7 @@ import csci571.hw9.model.WebServices;
 import csci571.hw9.schema.ArtistInfo;
 import csci571.hw9.schema.Attractions;
 import csci571.hw9.schema.SearchEventSchema;
+import csci571.hw9.schema.SongkickArtist;
 import csci571.hw9.schema.SongkickEvent;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
@@ -42,10 +43,11 @@ public class InfoViewModel extends ViewModel {
     public ObservableBoolean isUpcomingLoading = new ObservableBoolean(true);
     public ObservableBoolean isNoUpcomingEvent = new ObservableBoolean(false);
     public ObservableBoolean isNoArtist = new ObservableBoolean(false);
-    public ObservableInt sortOptionIdx = new ObservableInt(0);
-    public ObservableInt sortDirIdx = new ObservableInt(0);
+    public MutableLiveData<Integer> sortOptionIdx = new MutableLiveData<>();
+    public MutableLiveData<Integer> sortDirIdx = new MutableLiveData<>();
 
     public void init(SearchEventSchema SearchEvent) {
+
         mSearchEvent = SearchEvent;
         mArtists = new ArrayList<>();
         artistCount = 0;
@@ -71,11 +73,14 @@ public class InfoViewModel extends ViewModel {
                 @Override
                 public void accept(List<SongkickEvent> songkickEvents) throws Exception {
                     upcomingEvents = songkickEvents;
-                    if (upcomingEvents.size() > 0) {
-                        mUpcomingAdapter.setEvents(upcomingEvents);
-                        isNoUpcomingEvent.set(false);
-                    } else {
-                        isNoUpcomingEvent.set(true);
+                    if (mUpcomingAdapter != null) {
+                        if (upcomingEvents.size() > 0) {
+                            mUpcomingAdapter.setEvents(upcomingEvents);
+                            Log.d("InfoViewModel", "upcomingEventSource: " + mUpcomingAdapter);
+                            isNoUpcomingEvent.set(false);
+                        } else {
+                            isNoUpcomingEvent.set(true);
+                        }
                     }
                     isUpcomingLoading.set(false);
                 }
@@ -127,24 +132,26 @@ public class InfoViewModel extends ViewModel {
             isNoUpcomingEvent.set(true);
         }
     }
-    public void sortList(int sortIdx,int dirIdx) {
+
+    public void sortList() {
         if(upcomingEvents.size() > 0) {
+            Log.d("InfoViewModel", "sortList: " + SORT_OPTION_LIST.get(sortOptionIdx.getValue()));
             List<SongkickEvent> sortedList = new ArrayList<>(upcomingEvents);
-            switch (SORT_OPTION_LIST.get(sortIdx)) {
+            switch (SORT_OPTION_LIST.get(sortOptionIdx.getValue())) {
                 case "Event Name" : {
-                    sortedByName(sortedList,dirIdx);
+                    sortedByName(sortedList,sortDirIdx.getValue());
                     break;
                 }
                 case "Time" : {
-                    sortedByTime(sortedList,dirIdx);
+                    sortedByTime(sortedList,sortDirIdx.getValue());
                     break;
                 }
                 case "Artist" : {
-                    sortedByArtist(sortedList,dirIdx);
+                    sortedByArtist(sortedList,sortDirIdx.getValue());
                     break;
                 }
                 case "Type" : {
-                    sortedByType(sortedList,dirIdx);
+                    sortedByType(sortedList,sortDirIdx.getValue());
                     break;
                 }
                 default: {
@@ -171,6 +178,8 @@ public class InfoViewModel extends ViewModel {
                 Date d1 = new Date();
                 Date d2 = new Date();
                 try {
+                    o1.start.time = o1.start.time == null? "00:00:00":o1.start.time;
+                    o2.start.time = o2.start.time == null? "00:00:00":o2.start.time;
                     d1 = format.parse(o1.start.date + " " + o1.start.time);
                     d2 = format.parse(o2.start.date + " " + o2.start.time);
                 } catch(ParseException e) {
@@ -183,11 +192,16 @@ public class InfoViewModel extends ViewModel {
         });
     }
     private void sortedByArtist(List<SongkickEvent> list,final int dirIdx) {
+
         Collections.sort(list, new Comparator<SongkickEvent>() {
             @Override
             public int compare(SongkickEvent o1, SongkickEvent o2) {
-                if(SORT_DIR_LIST.get(dirIdx).equals("Ascending")) return o1.performance[0].displayname.compareTo(o2.performance[0].displayname);
-                else return o2.performance[0].displayname.compareTo(o1.performance[0].displayname);
+                SongkickArtist[] emptyArtist = new SongkickArtist[1];
+                emptyArtist[0] = new SongkickArtist();
+                o1.performance = o1.performance == null?emptyArtist:o1.performance;
+                o2.performance = o2.performance == null?emptyArtist:o2.performance;
+                if(SORT_DIR_LIST.get(dirIdx).equals("Ascending")) return o1.performance[0].displayName.compareTo(o2.performance[0].displayName);
+                else return o2.performance[0].displayName.compareTo(o1.performance[0].displayName);
             }
         });
     }
@@ -195,9 +209,12 @@ public class InfoViewModel extends ViewModel {
         Collections.sort(list, new Comparator<SongkickEvent>() {
             @Override
             public int compare(SongkickEvent o1, SongkickEvent o2) {
+                o1.type = o1.type == null?"":o1.type;
+                o2.type = o2.type == null?"":o2.type;
                 if(SORT_DIR_LIST.get(dirIdx).equals("Ascending")) return o1.type.compareTo(o2.type);
                 else return o2.type.compareTo(o1.type);
             }
         });
     }
+
 }

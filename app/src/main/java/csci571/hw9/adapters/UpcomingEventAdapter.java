@@ -3,6 +3,7 @@ package csci571.hw9.adapters;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdapter.UpcomingItemViewHolder> {
-    List<SongkickEvent> mEvents = new ArrayList<>();
+    private List<SongkickEvent> mEvents = new ArrayList<>();
 
     public void setEvents(List<SongkickEvent> list) {
         mEvents = list;
@@ -25,6 +26,7 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
     @Override
     public UpcomingEventAdapter.UpcomingItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                                           int viewType) {
+        Log.d("UpcomingEventAdapter", "onCreateViewHolder: ");
         UpcomingItemDataBinding binding = DataBindingUtil.inflate(LayoutInflater
                                                                       .from(parent.getContext()), R.layout.recycler_upcoming_item, parent, false);
         binding.setFragment(UpcomingFragment.newInstance());
@@ -36,12 +38,13 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
     @Override
     public void onBindViewHolder(@NonNull UpcomingEventAdapter.UpcomingItemViewHolder holder,
                                  int position) {
+        Log.d("UpcomingEventAdapter", "onBindViewHolder: " + position);
         holder.mBinding.setEvent(mEvents.get(position));
-
     }
 
     @Override
     public int getItemCount() {
+        Log.d("UpcomingEventAdapter", "getItemCount: ");
         return mEvents.size();
     }
 

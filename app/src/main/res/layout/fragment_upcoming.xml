@@ -6,6 +6,9 @@
   <data class="UpcomingEventDataBinding">
     <import type="android.view.View" />
     <variable
+      name="fragment"
+      type="csci571.hw9.fragment.UpcomingFragment"/>
+    <variable
       name="viewModel"
       type="csci571.hw9.viewmodel.InfoViewModel"/>
   </data>
@@ -68,7 +71,6 @@
       android:layout_marginRight="8dp"
       android:entries="@{viewModel.SORT_OPTION_LIST}"
       android:selectedItemPosition="@={viewModel.sortOptionIdx}"
-      android:onItemSelected="@{() -> viewModel.sortList(viewModel.sortOptionIdx.get(),viewModel.sortDirIdx.get())}"
       app:layout_constraintBottom_toBottomOf="@+id/sortDirSpinner"
       app:layout_constraintEnd_toStartOf="@+id/guideline2"
       app:layout_constraintHorizontal_bias="1.0"
@@ -85,8 +87,6 @@
       android:layout_marginRight="8dp"
       android:entries="@{viewModel.SORT_DIR_LIST}"
       android:selectedItemPosition="@={viewModel.sortDirIdx}"
-      android:clickable="@{viewModel.sortOptionIdx.get() != 0}"
-      android:onItemSelected="@{() -> viewModel.sortList(viewModel.sortOptionIdx.get(),viewModel.sortDirIdx.get())}"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="@+id/guideline2"
       app:layout_constraintTop_toTopOf="parent"/>
@@ -105,6 +105,7 @@
       android:layout_marginEnd="8dp"
       android:layout_marginLeft="8dp"
       android:layout_marginRight="8dp"
+      android:visibility="@{viewModel.isUpcomingLoading?View.GONE:View.VISIBLE}"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
