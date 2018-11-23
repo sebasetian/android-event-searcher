@@ -88,7 +88,7 @@ public class FormFragment extends Fragment {
             case REQUEST_LOCATION: {
                 if (ContextCompat
                     .checkSelfPermission(formBinding.getRoot().getContext(),
-                                         permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                         permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     mFusedLocationClient.getLastLocation().addOnSuccessListener(
                         new OnSuccessListener<Location>() {
                             @Override
