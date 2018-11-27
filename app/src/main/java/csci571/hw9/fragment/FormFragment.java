@@ -93,6 +93,11 @@ public class FormFragment extends Fragment {
                         new OnSuccessListener<Location>() {
                             @Override
                             public void onSuccess(Location location) {
+                                if(location == null) {
+                                    location = new Location("dummyprovider");
+                                    location.setLatitude(34.0266);
+                                    location.setLongitude(-118.283);
+                                }
                                 mViewModel.currLocationSource.onNext(location);
                                 navigateToResult();
                             }});

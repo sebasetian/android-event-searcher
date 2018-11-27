@@ -112,7 +112,6 @@ public class FormViewModel extends ViewModel {
     }
 
     public void onSubmit(double lat,double lng) {
-        if(true) {
             FormPostData data = new FormPostData();
             data.lat = lat;
             data.lng = lng;
@@ -123,7 +122,6 @@ public class FormViewModel extends ViewModel {
 
             data.distanceUnit = getUnitItem(form.distanceUnitIdx.get());
             mWebService.postFrom(data);
-        }
     }
     private String getCategoryItem(int idx) {
         return CATEGORY_LIST.get(idx);
