@@ -82,9 +82,9 @@ public class InfoActivity extends AppCompatActivity implements EventInfoFragment
         Menu menu = toolbar.getMenu();
         final MenuItem fav = menu.findItem(R.id.action_favorite);
         if (helper.contains(gson.fromJson(getIntent().getStringExtra("EVENT"), SearchEventSchema.class).id)) {
-            fav.setIcon(R.drawable.heart_fill_white);
+            fav.setIcon(R.drawable.heart_fill_red);
         } else {
-            fav.setIcon(R.drawable.heart_outline_white);
+            fav.setIcon(R.drawable.heart_fill_white);
         }
         mDisposable.add(
             helper.prefChangeSource.subscribe(new Consumer<String>() {
@@ -92,9 +92,9 @@ public class InfoActivity extends AppCompatActivity implements EventInfoFragment
             public void accept(String s) throws Exception {
                 if (s.equals(gson.fromJson(getIntent().getStringExtra("EVENT"), SearchEventSchema.class).id))
                     if (helper.contains(s)) {
-                        fav.setIcon(R.drawable.heart_fill_white);
+                        fav.setIcon(R.drawable.heart_fill_red);
                     } else {
-                        fav.setIcon(R.drawable.heart_outline_white);
+                        fav.setIcon(R.drawable.heart_fill_white);
                     }
                 }
         }));
