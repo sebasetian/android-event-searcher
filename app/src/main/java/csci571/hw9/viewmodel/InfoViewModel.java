@@ -56,10 +56,15 @@ public class InfoViewModel extends ViewModel {
             public void accept(ArtistInfo artistInfo) throws Exception {
                 if (artistInfo.name.length() > 0) mArtists.add(artistInfo);
                 artistCount++;
-                if (artistCount == mSearchEvent._embedded.attractions.length)
+                if (mSearchEvent._embedded != null && mSearchEvent._embedded.attractions != null &&
+                    artistCount == mSearchEvent._embedded.attractions.length)
                     if (mArtAdapter != null) {
                         if (mArtists.size() > 0) {
-                            mArtAdapter.setData(mArtists);
+                            List<ArtistInfo> twoArtists = new ArrayList<>();
+                            for (int i = 0; i < Math.min(mArtists.size(),2);i++) {
+                                twoArtists.add(mArtists.get(i));
+                            }
+                            mArtAdapter.setData(twoArtists);
                             isNoArtist.set(false);
                         } else {
                             isNoArtist.set(true);
@@ -85,14 +90,20 @@ public class InfoViewModel extends ViewModel {
                     isUpcomingLoading.set(false);
                 }
             }));
-        for(Attractions attr:mSearchEvent._embedded.attractions) {
-            if (attr.classifications[0].segment.name.equals("Music")) {
-                mWebservice.getArtist(attr.name);
-            } else {
-                ArtistInfo artist = new ArtistInfo();
-                artist.name = attr.name;
-                artist.setNonMusic();
-                mWebservice.searchImg(artist);
+        if (mSearchEvent._embedded == null || mSearchEvent._embedded.attractions == null
+            || mSearchEvent._embedded.attractions.length == 0) {
+            isNoArtist.set(true);
+            isArtistLoading.set(false);
+        } else {
+            for(Attractions attr:mSearchEvent._embedded.attractions) {
+                if (attr.classifications[0].segment.name.equals("Music")) {
+                    mWebservice.getArtist(attr.name);
+                } else {
+                    ArtistInfo artist = new ArtistInfo();
+                    artist.name = attr.name;
+                    artist.setNonMusic();
+                    mWebservice.searchImg(artist);
+                }
             }
         }
 
@@ -114,9 +125,14 @@ public class InfoViewModel extends ViewModel {
     public void setArtistAdapter(ArtistItemAdapter adapter) {
         mArtAdapter = adapter;
         mArtAdapter.setViewModel(this);
-        if (artistCount == mSearchEvent._embedded.attractions.length)
+        if (mSearchEvent._embedded != null && mSearchEvent._embedded.attractions != null &&
+            artistCount == mSearchEvent._embedded.attractions.length)
             if (mArtists.size() > 0) {
-                mArtAdapter.setData(mArtists);
+                List<ArtistInfo> twoArtists = new ArrayList<>();
+                for (int i = 0; i < Math.min(mArtists.size(),2);i++) {
+                    twoArtists.add(mArtists.get(i));
+                }
+                mArtAdapter.setData(twoArtists);
                 isNoArtist.set(false);
             } else {
                 isNoArtist.set(true);

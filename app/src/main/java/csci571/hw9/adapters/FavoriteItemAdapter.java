@@ -89,6 +89,13 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
         void setPref() {
             ((ImageView) mView
                 .findViewById(R.id.favBtn)).setImageResource(R.drawable.heart_fill_red);
+            ((ImageView) mView.findViewById(R.id.favBtn)).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PrefHelper helper = PrefHelper.getInstance();
+                    helper.switchPref(mEvent.id,mEvent);
+                }
+            });
             mDisposable.add(
                 PrefHelper.getInstance().prefChangeSource.subscribe(new Consumer<String>() {
                     @Override

@@ -71,9 +71,11 @@ public class EventInfoFragment extends Fragment {
         TextView ArtistListText = view.findViewById(R.id.ArtistListText);
         StringBuilder artists = new StringBuilder();
         String divider = "";
-        for (Attractions attr: event._embedded.attractions) {
-            artists.append(divider).append(attr.name);
-            divider = " | ";
+        if (event._embedded != null && event._embedded.attractions != null) {
+            for (Attractions attr : event._embedded.attractions) {
+                artists.append(divider).append(attr.name);
+                divider = " | ";
+            }
         }
         if (artists.length() == 0) {
             ArtistListText.setText("N/A");
