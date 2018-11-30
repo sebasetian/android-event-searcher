@@ -109,6 +109,9 @@ public class InfoViewModel extends ViewModel {
 
         if (mSearchEvent._embedded.venues != null && mSearchEvent._embedded.venues.length > 0) {
             mWebservice.searchVenueUpcomingEvent(mSearchEvent._embedded.venues[0].name);
+        } else {
+            isNoUpcomingEvent.set(true);
+            isUpcomingLoading.set(false);
         }
 
     }

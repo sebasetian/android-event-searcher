@@ -85,7 +85,7 @@ public class EventInfoFragment extends Fragment {
 
 
         TextView VenueText = view.findViewById(R.id.VenueText);
-        if (event._embedded.venues.length == 0) {
+        if (event._embedded.venues == null || event._embedded.venues.length == 0) {
             VenueText.setVisibility(View.GONE);
             view.findViewById(R.id.VenueTitle).setVisibility(View.GONE);
         } else {
